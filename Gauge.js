@@ -25,11 +25,7 @@ class Gauge {
 
     zoneCheck(gaugeTopY) {
         if (gaugeTopY >= this.y && gaugeTopY <= this.y + this.h) {
-            accumTime++;
-            //이하 디버그용
-            console.log(accumTime);
-            console.log("바닥" + (this.y));
-            console.log("천장" + (this.y + this.h));
+            accumTime++; 
         }
         if (accumTime == 54) { //대략 3초유지하면 점수 획득
             accumTime = 0;

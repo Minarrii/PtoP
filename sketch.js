@@ -1,10 +1,7 @@
 
-
-
-
-let stageNum = 0;
+let stageNum = 1; //스테이지 관리  나중에 바꾸셈
 let slide = 0;
-let isDialogue2Active = false; // 전역 변수 추가
+//대화 시스템 관련
 let ghostImg, shakeSound;
 let backgroundDark, backgroundLight, museumImg;
 let startBtnImg, inputPromptImg, continueBtnImg;
@@ -16,6 +13,7 @@ let playerName = "";
 let inputBox;
 let dialogueBoxImg, nextButtonImg;
 let myFont;
+//1스테이지
 let titleBack, startBut, startButCl, art, doma, bubble, bawl, whisk, gauge, board, butter;
 let score = 0;
 let centerX = 420;
@@ -32,8 +30,15 @@ let zoneYArray = [];
 let zoneHArray = [];
 let stage1sceneNum = 0;
 let startButton;
+let needSt1Panel = true;
+let st1Timer = 0;
+let lastTimeChecked; //1스테 타이머 변수
+let remainingTime = 10;
+let st1SuccessPoint = 1;
+//다이얼로그
 let dialogue1;
 let dialogue2;
+let dialogue3;
 
 
 function preload() {
@@ -48,8 +53,10 @@ function setup() {
   imageMode(CENTER);
   textAlign(LEFT, TOP);
   frameRate(18);
+  //다이얼로그 객체화
   dialogue1 = new Dialogue(dialogue1List);
   dialogue2 = new Dialogue(dialogue2List);
+  dialogue3 = new Dialogue(dialogue3List);
 
   startButton = new Button(startBut, startButCl, width / 2 - 140, height * 4 / 5 - 50, 300, 100, () => {
     stage1sceneNum = 1;
@@ -62,11 +69,13 @@ function setup() {
   inputBox.hide();
 
   for (let i = 0; i < 99; i++) {
-    zoneYArray[i] = random(10, 300);
+    zoneYArray[i] = random(30, 300);
     zoneHArray[i] = random(90, 180);
   }
   gaugeZoneY = zoneYArray[0];
   gaugeZoneH = zoneHArray[0];
+
+  lastTimeChecked = millis();
 }
 
 function draw() {
@@ -91,19 +100,13 @@ function mouseClicked() {
 
     if (mouseX >= btnX - btnW / 2 && mouseX <= btnX + btnW / 2 &&
       mouseY >= btnY - btnH / 2 && mouseY <= btnY + btnH / 2) {
-
       if (!dialogue2.next()) {
         stage1sceneNum = 2; // 다음 씬으로
       }
     }
   }
-
-
   // 추후 게임 인터랙션 등을 여기에 추가 가능
 }
-
-
-
 
 
 
