@@ -23,7 +23,6 @@ function draw1() {
 
 }
 
-
 function draw2() {
     imageMode(CORNER);
     textAlign(LEFT, BASELINE);
@@ -47,9 +46,7 @@ function draw2() {
             textSize(40);
 
 
-            if (!dialogue2.isActive) {
-                dialogue2.start(); // 대사 시작
-            }
+            dialogue2.start(); // 대사 시작
             dialogue2.display(playerName, dialogueBoxImg, nextButtonImg); // 활성화된 경우만 표시
             // 스테이지 1에 대사 등장
             break;// 대사 사라지고
@@ -150,6 +147,7 @@ function draw2() {
             let gaugeZone = new Gauge(board, 913, gaugeZoneY, 82, gaugeZoneH);
             gaugeZone.display();
 
+
             fill(245, 165, 44);//게이지 바 그리기
             noStroke();
             rect(915, 540, 80, -gaugeHeight, 30);
@@ -178,14 +176,17 @@ function draw2() {
             break;
         case 3:
             //미술관으로 복귀
-            background(255); 
-            imageMode(CENTER);
-            textAlign(LEFT, TOP);
-            image(museumImg, width / 2, height / 2, width, height);
-            image(ghostImg, width / 2, height / 2, ghostImg.width * 0.3, ghostImg.height * 0.3);
+            if (dialogue3.index == 0) image(art, 0, 0, width, height);
+            else {
+                background(255);
+                imageMode(CENTER);
+                textAlign(LEFT, TOP);
+                image(museumImg, width / 2, height / 2, width, height);
+                image(ghostImg, width / 2, height / 2, ghostImg.width * 0.3, ghostImg.height * 0.3);
+            }
 
-            dialogue3.start();
-            dialogue3.display(playerName, dialogueBoxImg, nextButtonImg); // 대사 다시 등장
+            dialogue3.start();  // 한 번만 실행
+            dialogue3.display(playerName, dialogueBoxImg, nextButtonImg);
             break;
     }
 

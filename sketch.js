@@ -1,5 +1,5 @@
 
-let stageNum = 1; //스테이지 관리  나중에 바꾸셈
+let stageNum = 0; //스테이지 관리  나중에 바꾸셈
 let slide = 0;
 //대화 시스템 관련
 let ghostImg, shakeSound;
@@ -33,8 +33,8 @@ let startButton;
 let needSt1Panel = true;
 let st1Timer = 0;
 let lastTimeChecked; //1스테 타이머 변수
-let remainingTime = 10;
-let st1SuccessPoint = 1;
+let remainingTime = 60;
+let st1SuccessPoint = 5;
 //다이얼로그
 let dialogue1;
 let dialogue2;
@@ -86,7 +86,6 @@ function draw() {
   }
 }
 
-
 function mouseClicked() {
   if (stage1sceneNum == 0) {
     startButton.checkClick();
@@ -102,6 +101,22 @@ function mouseClicked() {
       mouseY >= btnY - btnH / 2 && mouseY <= btnY + btnH / 2) {
       if (!dialogue2.next()) {
         stage1sceneNum = 2; // 다음 씬으로
+      }
+    }
+  }
+  else if (stageNum === 1 && stage1sceneNum === 3) {
+    const btnX = width - 170;
+    const btnY = height - 50;
+    const btnW = 80;
+    const btnH = 30;
+    console.log("호출");
+
+    if (mouseX >= btnX - btnW / 2 && mouseX <= btnX + btnW / 2 &&
+      mouseY >= btnY - btnH / 2 && mouseY <= btnY + btnH / 2) {
+      if (!dialogue3.next()) {
+        dialogue3.next();
+        
+        // 다음 씬으로
       }
     }
   }

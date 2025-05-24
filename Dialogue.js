@@ -8,6 +8,7 @@ class Dialogue {
     this.isActive = false;
   }
   start() {
+    if (this.isActive) return; //start가 반복해서 돌아가는 경우를 막기 위함. 이제 조건문 없이 start()바로 써도 됨!
     this.index = 0;
     this.isActive = true;
     this.shake = false;
