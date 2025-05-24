@@ -30,6 +30,7 @@ class Gauge {
         if (accumTime == 54) { //대략 3초유지하면 점수 획득
             accumTime = 0;
             score += 1;
+            gaugeValue=0;
         this.nextZone(zoneYArray[score], zoneHArray[score]);
         }
     }

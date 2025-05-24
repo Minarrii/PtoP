@@ -72,12 +72,12 @@ class Dialogue {
 // 이름 위치
     let speakerName = this.getCurrentSpeaker(playerName);
     textAlign(CENTER, CENTER);
-    textSize(18);
+    textSize(22);
     fill(255);
     text(speakerName, dx / 2 + 3, dy - boxH / 2 + 40);
 
     textAlign(CENTER, CENTER);
-    textSize(18);
+    textSize(20);
     fill(90, 70, 50);
 
     let content = this.getCurrentText();
