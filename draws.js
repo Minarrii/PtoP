@@ -184,8 +184,7 @@ function draw2() {
                 image(museumImg, width / 2, height / 2, width, height);
                 image(ghostImg, width / 2, height / 2, ghostImg.width * 0.3, ghostImg.height * 0.3);
             }
-
-            dialogue3.start();  // 한 번만 실행
+            dialogue3.start();
             dialogue3.display(playerName, dialogueBoxImg, nextButtonImg);
             break;
     }
@@ -193,6 +192,130 @@ function draw2() {
 
 
 }
+
+function draw4() {
+    imageMode(CORNER);
+    textAlign(LEFT, BASELINE);
+    switch (stage3sceneNum) {
+        case 0:
+            image(titleBack, 0, 0);
+            startButton.display();
+
+            textAlign(CENTER);
+            textSize(40);
+            text("STAGE 3", width / 2, height / 5);
+            textSize(60);
+            text("인간의 아들", width / 2, height * 2.7 / 5);
+
+            break;
+        case 1:
+            image(man_bg, 0, 0, width, height);
+            textAlign(LEFT);
+            fill("white");
+            textSize(40);
+
+            dialogue6.start(); // 대사 시작
+            dialogue6.display(playerName, dialogueBoxImg, nextButtonImg); // 활성화된 경우만 표시
+
+            break;// 대사 사라지고
+        case 2:
+
+            //배경 사물
+            image(man_face_bg, 0, 0, width, height); //남자 그림
+            cameraButton.display(); //카메라 호버링
+
+            //점수판 구현
+            image(scoreBoard, 500, 0, 500, 80);
+            textSize(24);
+            textAlign(LEFT);
+            text("찍은 사진:" + score3 + " 장", 720, 50);
+
+
+
+
+            //시작 전, 성공, 실패 상태에 따라 패널의 내용을 변경
+            if (score3 == 0 && remainingTime3 != 0) drawSt1Panel("카메라를 클릭해 사진을 찍자.", "남자의 얼굴이 완전히 가려졌을 때 찍어야 한다.", "START");
+            else if (score3 >= st3SuccessPoint && remainingTime3 >= 0) drawSt1Panel("사진을 아주 잘 찍었다!", "남자에게 보여 주자.", "NEXT");
+            else if (remainingTime3 === 0) drawSt1Panel("사진을 잘 찍지 못했다.", "다시 시도해 보자.", "RESTART");
+
+            //패널 클릭 시 액션
+            if (mouseX >= 400 && mouseX <= 600 && mouseY >= 320 && mouseY <= 380 && mouseIsPressed) {
+                needSt1Panel = false;  //시작 전이라면 게임 시작!
+                if (score3 >= st3SuccessPoint) {
+                    stage3sceneNum = 3; //성공한 경우라면 다음 씬으로! 
+                    needSt1Panel = false;
+                }
+                else if (remainingTime3 == 0) {//타임오버했다면 점수와 시간을 초기화
+                    score3 = 0;
+                    remainingTime3 = 60;
+                    for (let t of targets) {
+                        t.relocate();// 화면에 그리기
+                    }
+                }
+            }
+
+
+
+            if (!needSt1Panel) {//패널이 꺼지고 난 후에 시작!
+                //타이머   
+                // 1초(1000ms) 지날 때마다 타이머 감소
+                if (millis() - lastTimeChecked3 >= 1000 && remainingTime3 > 0) {
+                    remainingTime3--;
+                    lastTimeChecked3 = millis();
+                }
+                // 타이머 텍스트 형식 (00:59 형식)
+                let min = floor(remainingTime3 / 60);
+                let sec = remainingTime3 % 60;
+                let timeStr = nf(min, 2) + ":" + nf(sec, 2);
+                text(timeStr, width - 105, 40); // 오른쪽 위에 출력
+
+                //사물들
+                line(width / 2 - 110, 0, width / 2 - 110, 300) //표시선, 추후 삭제 가능
+                line(width / 2 + 40, 0, width / 2 + 40, 300)
+                for (let t of targets) {
+                    t.move();     // 위치 업데이트
+                    t.display();  // 화면에 그리기
+                }
+
+                textSize(18)
+                image(greenApple, 0, 0, 60, 60);
+                text(": +1", 40, 40);
+                image(face, 85, 18, 30, 30);
+                text(": +2", 120, 40);
+                image(bird, 163, 15, 30, 30);
+                text(": -2", 200, 40);
+            }
+
+
+            //성공 실패 판정
+            if (score3 >= st3SuccessPoint && remainingTime3 >= 0) {//성공
+                needSt1Panel = true;
+            }
+            if (remainingTime3 === 0) {//실패: 시간 오버
+                needSt1Panel = true;
+            }
+
+            break;
+        case 3:
+            //미술관으로 복귀
+            if (dialogue7.index == 0) image(man_bg, 0, 0, width, height);
+            else {
+                background(255);
+                imageMode(CENTER);
+                textAlign(LEFT, TOP);
+                image(museumImg, width / 2, height / 2, width, height);
+                image(ghostImg, width / 2, height / 2, ghostImg.width * 0.3, ghostImg.height * 0.3);
+            }
+
+            dialogue7.start();  // 한 번만 실행
+            dialogue7.display(playerName, dialogueBoxImg, nextButtonImg);
+            break;
+    }
+
+
+
+}
+
 
 function drawSt1Panel(text1, text2, text3) {
     if (needSt1Panel) {
@@ -210,4 +333,6 @@ function drawSt1Panel(text1, text2, text3) {
         text(text3, 450, 360);
     }
 }
+
+
 

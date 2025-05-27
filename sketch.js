@@ -34,16 +34,31 @@ let needSt1Panel = true;
 let st1Timer = 0;
 let lastTimeChecked; //1스테 타이머 변수
 let remainingTime = 60;
-let st1SuccessPoint = 5;
+let st1SuccessPoint = 1;
 //다이얼로그
 let dialogue1;
 let dialogue2;
 let dialogue3;
+let dialogue6;
+let dialogue7;
+//3스테이지
+let stage3sceneNum = 0;
+let man_bg, man_face_bg, bird, pipe, greenApple, retroCamera, darkCamera;
+let score3 = 0;
+let lastTimeChecked3;//3스테 타이머 변수
+let st3Timer = 0;
+let remainingTime3 = 60;
+let st3SuccessPoint = 5;
+let cameraButton;
+let targetImages = [];
+let targets = [];
+
 
 
 function preload() {
   preload0();
   preload1();
+  preload3();
 
 }
 
@@ -57,10 +72,37 @@ function setup() {
   dialogue1 = new Dialogue(dialogue1List);
   dialogue2 = new Dialogue(dialogue2List);
   dialogue3 = new Dialogue(dialogue3List);
+  dialogue6 = new Dialogue(dialogue6List);
+  dialogue7 = new Dialogue(dialogue7List);
 
   startButton = new Button(startBut, startButCl, width / 2 - 140, height * 4 / 5 - 50, 300, 100, () => {
-    stage1sceneNum = 1;
+    if (stageNum == 1) stage1sceneNum = 1;
+    else if (stageNum == 3) stage3sceneNum = 1;
   });
+
+  cameraButton = new Button(darkCamera, retroCamera, width / 2 - 200, height * 2 / 5 + 100, retroCamera.width / 3, retroCamera.height / 3, () => {
+    let validTarget = targets.find(t =>
+      t.isInFrame() && t.x > width / 2 - 110 && t.x < width / 2 + 40
+    );
+
+    if (validTarget) {
+      console.log("일단 인식함");
+      if (validTarget.imgNum === 0) {  // 0: greenApple
+        score3 += 1;
+        console.log("사과 발견! 점수 +1");
+      } else if (validTarget.imgNum === 1) {  // 1: bird
+        score3 -= 2;
+        console.log("새 발견! 점수 -2");
+      } else if (validTarget.imgNum === 2) {
+        console.log("얼굴발견! 점수 +2");
+        score3 += 2;
+      }
+    } else {
+      console.log("해당 영역에 타겟 없음");
+    }
+  });
+
+
   // 이름 입력창
   inputBox = createInput();
   inputBox.position(width / 2 - 215, height / 2 - 17);
@@ -76,6 +118,13 @@ function setup() {
   gaugeZoneH = zoneHArray[0];
 
   lastTimeChecked = millis();
+  lastTimeChecked3 = millis();
+
+  //스테 3 이미지 배열 만들기
+  for (let i = 0; i < 40; i++) {
+    targets.push(new PhotoTarget(i, int(random(0, 3))));
+  }
+
 }
 
 function draw() {
@@ -83,11 +132,15 @@ function draw() {
     draw1();
   } else if (stageNum === 1) {
     draw2();
+  } else if (stageNum === 3) {
+    draw4();
   }
 }
 
 function mouseClicked() {
-  if (stage1sceneNum == 0) {
+
+
+  if (stageNum == 1 && stage1sceneNum == 0 || stageNum == 3 && stage3sceneNum == 0) {
     startButton.checkClick();
 
   }
@@ -109,20 +162,51 @@ function mouseClicked() {
     const btnY = height - 50;
     const btnW = 80;
     const btnH = 30;
-    console.log("호출");
 
     if (mouseX >= btnX - btnW / 2 && mouseX <= btnX + btnW / 2 &&
       mouseY >= btnY - btnH / 2 && mouseY <= btnY + btnH / 2) {
       if (!dialogue3.next()) {
-        dialogue3.next();
-        
-        // 다음 씬으로
+        stageNum = 3;
+        needSt1Panel = true; //패널을 미리 한 번 켜놔야 함
       }
     }
   }
+
+
+  if (stageNum === 3 && stage3sceneNum === 1) {//3스테이지 시작 대화 제어
+    const btnX = width - 170;
+    const btnY = height - 50;
+    const btnW = 80;
+    const btnH = 30;
+
+    if (mouseX >= btnX - btnW / 2 && mouseX <= btnX + btnW / 2 &&
+      mouseY >= btnY - btnH / 2 && mouseY <= btnY + btnH / 2) {
+      if (!dialogue6.next()) {
+        stage3sceneNum = 2; // 
+      }
+    }
+  }
+  else if (stageNum === 3 && stage3sceneNum === 3) { //3스테 미니게임 끝나고
+    const btnX = width - 170;
+    const btnY = height - 50;
+    const btnW = 80;
+    const btnH = 30;
+
+    if (mouseX >= btnX - btnW / 2 && mouseX <= btnX + btnW / 2 &&
+      mouseY >= btnY - btnH / 2 && mouseY <= btnY + btnH / 2) {
+      if (!dialogue7.next()) {
+        console.log("끝!")
+        stageNum = 4;
+        //needSt1Panel = true; 
+      }
+    }
+  }
+
+  if (stageNum === 3 && stage3sceneNum === 2) {
+    cameraButton.checkClick();
+  }
   // 추후 게임 인터랙션 등을 여기에 추가 가능
 }
-
 
 
 function mousePressed() {
