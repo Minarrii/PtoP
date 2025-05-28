@@ -39,8 +39,24 @@ let st1SuccessPoint = 1;
 let dialogue1;
 let dialogue2;
 let dialogue3;
+let dialogue4;
+let dialogue5;
 let dialogue6;
 let dialogue7;
+
+//2스테이지
+let cropGrid = [];
+let currentTurn = 0;
+let maxTurns = 20;
+let nextTurnTime = 0;
+let score2 = 0;
+let remainingTime2 = 60;
+let clickedThisFrame = false;
+let needSt1Panel = true;
+let lastTimeChecked2 = 0;
+let normalCropImg, goldCropImg, darkCropImg;
+let equipmentImg, scoreBoard, noWomanbg;
+
 //3스테이지
 let stage3sceneNum = 0;
 let man_bg, man_face_bg, bird, pipe, greenApple, retroCamera, darkCamera;
