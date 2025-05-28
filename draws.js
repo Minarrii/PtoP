@@ -23,6 +23,8 @@ function draw1() {
 
 }
 
+
+
 function draw2() {
     imageMode(CORNER);
     textAlign(LEFT, BASELINE);
@@ -193,6 +195,120 @@ function draw2() {
 
 }
 
+function draw3() {
+    switch (stage2sceneNum) {
+        case 0: // Stage intro
+            imageMode(CORNER);
+            image(titleBack, 0, 0);
+            startButton.display();
+            textAlign(CENTER);
+            textSize(40);
+            text("STAGE 2", width / 2, height / 5);
+            textSize(60);
+            text("이삭 줍는 여인들", width / 2, height * 2.7 / 5);
+            break;
+
+
+        case 1:
+            imageMode(CORNER);
+            image(womanbg, 0, 0, width, height);
+            textAlign(LEFT);
+            fill("white");
+            textSize(40);
+
+
+            dialogue4.start(); // 대사 시작
+            dialogue4.display(playerName, dialogueBoxImg, nextButtonImg);
+            break;
+        case 2:
+            background(255);
+            drawBackground();
+            textAlign(LEFT);
+            fill("white");
+            textSize(40);
+            text("STAGE 2", 30, 50);
+
+            // 이삭 그리기
+            for (let i = 0; i < cropGrid.length; i++) {
+                let crop = cropGrid[i];
+                if (crop && crop.isVisible()) crop.display();
+            }
+
+            drawUI();
+
+            // 3초바다 이삭 생기기
+            if (millis() > nextTurnTime && currentTurn < maxTurns && !needSt1Panel) {
+                currentTurn++;
+                nextTurnTime = millis() + 3000;
+                spawnCrops();
+            }
+
+            // 카운트다운 타이머
+            if (!needSt1Panel && millis() - lastTimeChecked2 >= 1000 && remainingTime2 > 0) {
+                remainingTime2--;
+                lastTimeChecked2 = millis();
+            }
+
+            //패널 클릭 시 액션
+            if (mouseX >= 400 && mouseX <= 600 && mouseY >= 320 && mouseY <= 380 && mouseIsPressed) {
+                needSt1Panel = false;  //시작 전이라면 게임 시작!
+                if (score2 == st2SuccessPoint) {
+                    stage2sceneNum = 3; //성공한 경우라면 다음 씬으로! 
+                    needSt1Panel = false;
+                }
+                else if (remainingTime2 == 0) {//타임오버했다면 점수와 시간을 초기화
+                    resetGame();
+                }
+            }
+            if (!needSt1Panel&&mouseIsPressed) {
+                for (let i = 0; i < cropGrid.length; i++) {
+                    if (cropGrid[i] && cropGrid[i].checkClick(mouseX, mouseY)) break; // 그냥 게임중 아무 패널 안 보이는 상태
+                }
+            }
+
+
+            // 점수 패널
+            if (score2 >= st2SuccessPoint) {
+                drawSt1Panel("이삭을 충분히 주웠다!", "여인들에게 갖다 주자", "NEXT");
+            } else if (currentTurn >= 20) {
+                drawSt1Panel("이삭을 충분히 모으지 못했다.", "다시 시작해 보자", "RESTART");
+            } else if (score2 === 0 && currentTurn === 0) {
+                drawSt1Panel("이삭이 사라지기 전에 빨리 클릭해서 줍자!", "특별한 이삭도 섞여 있으니 유심히 봐야 돼.", "START");
+            }
+
+
+            // 마우스 사진
+            image(equipmentImg, mouseX - 37, mouseY - 15, 90, 135);
+
+            //성공 실패 판정
+            if (score2 >= st2SuccessPoint && remainingTime2 >= 0) {//성공
+                needSt1Panel = true;
+            }
+            if (remainingTime2 === 0) {//실패: 시간 오버
+                needSt1Panel = true;
+            }
+            break;
+        case 3:
+            //미술관으로 복귀
+            imageMode(CORNER);
+            if (dialogue5.index == 0) image(womanbg, 0, 0, width, height);
+            else {
+                background(255);
+                imageMode(CENTER);
+                textAlign(LEFT, TOP)
+                image(museumImg, width / 2, height / 2, width, height);
+                image(ghostImg, width / 2, height / 2, ghostImg.width * 0.3, ghostImg.height * 0.3);
+            }
+
+            dialogue5.start();  // 한 번만 실행
+            dialogue5.display(playerName, dialogueBoxImg, nextButtonImg);
+
+            break;
+    }
+
+}
+
+
 function draw4() {
     imageMode(CORNER);
     textAlign(LEFT, BASELINE);
@@ -331,6 +447,67 @@ function drawSt1Panel(text1, text2, text3) {
         fill("white");
         textSize(30);
         text(text3, 450, 360);
+    }
+}
+
+function drawBackground() {
+    imageMode(CORNER)
+    image(noWomanbg, 0, 0, width, height);
+    stroke(180);
+    //for (let i = 0; i <= 10; i++) line(i * 100, 100, i * 100, 600);
+    //for (let j = 0; j <= 5; j++) line(0, 100 + j * 100, 1000, 100 + j * 100);
+}
+
+//점수 표시
+function drawUI() {
+    image(scoreBoard, 500, -10, 500, 120);
+    textSize(30);
+    textAlign(LEFT);
+    text("주운 이삭:" + score2 + " 개", 700, 50);
+    let min = floor(remainingTime2 / 60);
+    let sec = remainingTime2 % 60;
+    let timeStr = nf(min, 2) + ":" + nf(sec, 2);
+    text(timeStr, width - 105, 40);
+
+    textSize(35);
+    text("+1", 325, 65); image(normalCropImg, 260, 25, 60, 60);
+    text("+5", 465, 65); image(goldCropImg, 400, 25, 60, 60);
+    text("-5", 605, 65); image(darkCropImg, 540, 25, 60, 60);
+}
+
+function resetGame() {
+    score2 = 0;
+    remainingTime2 = 60;
+    currentTurn = 0;
+    nextTurnTime = millis() + 1000;
+    cropGrid = Array(50).fill(null);
+    needSt1Panel = false;
+}
+
+function spawnCrops() {
+    cropGrid = Array(50).fill(null);
+    let indices = Array.from({ length: 50 }, (_, i) => i);
+    shuffle(indices, true);
+
+    const cellWidth = 100;
+    const cellHeight = 70;
+    const cropSize = 80;
+
+    for (let i = 0; i < 8; i++) {
+        let idx = indices[i];
+        let col = idx % 10;
+        let row = Math.floor(idx / 10);
+
+        let x = col * cellWidth + (cellWidth - cropSize) / 2;
+        let y = row * cellHeight + (cellHeight - cropSize) / 2 + 195;  // 210 pushes grid lower on screen
+
+        let type = "normal";
+        if (currentTurn >= 5 && currentTurn < 15 && (i === 0 || i === 1)) {
+            type = i === 0 ? "gold" : "dark";
+        } else if (currentTurn >= 15 && (i < 4)) {
+            type = i % 2 === 0 ? "gold" : "dark";
+        }
+        cropGrid[idx] = new Crop(x, y, type);
     }
 }
 

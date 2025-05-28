@@ -39,8 +39,24 @@ let st1SuccessPoint = 1;
 let dialogue1;
 let dialogue2;
 let dialogue3;
+let dialogue4;
+let dialogue5;
 let dialogue6;
 let dialogue7;
+//2stage
+let stage2sceneNum = 0;
+let cropGrid = [];
+let currentTurn = 0;
+let maxTurns = 20;
+let nextTurnTime = 0;
+let score2 = 0;
+let remainingTime2 = 60;
+let clickedThisFrame = false;
+let lastTimeChecked2 = 0;
+let st2SuccessPoint= 10;
+//
+let normalCropImg, goldCropImg, darkCropImg;
+let equipmentImg, scoreBoard, noWomanbg, womanbg;
 //3스테이지
 let stage3sceneNum = 0;
 let man_bg, man_face_bg, bird, pipe, greenApple, retroCamera, darkCamera;
@@ -58,6 +74,7 @@ let targets = [];
 function preload() {
   preload0();
   preload1();
+  preload2();
   preload3();
 
 }
@@ -72,12 +89,16 @@ function setup() {
   dialogue1 = new Dialogue(dialogue1List);
   dialogue2 = new Dialogue(dialogue2List);
   dialogue3 = new Dialogue(dialogue3List);
+  dialogue4 = new Dialogue(dialogue4List);
+  dialogue5 = new Dialogue(dialogue5List);
   dialogue6 = new Dialogue(dialogue6List);
   dialogue7 = new Dialogue(dialogue7List);
 
   startButton = new Button(startBut, startButCl, width / 2 - 140, height * 4 / 5 - 50, 300, 100, () => {
     if (stageNum == 1) stage1sceneNum = 1;
+    else if (stageNum == 2) stage2sceneNum = 1;
     else if (stageNum == 3) stage3sceneNum = 1;
+
   });
 
   cameraButton = new Button(darkCamera, retroCamera, width / 2 - 200, height * 2 / 5 + 100, retroCamera.width / 3, retroCamera.height / 3, () => {
@@ -120,6 +141,11 @@ function setup() {
   lastTimeChecked = millis();
   lastTimeChecked3 = millis();
 
+  //스테2 이삭 배열
+  for (let i = 0; i < 50; i++) cropGrid.push(null);
+  nextTurnTime = millis() + 1000;
+
+
   //스테 3 이미지 배열 만들기
   for (let i = 0; i < 40; i++) {
     targets.push(new PhotoTarget(i, int(random(0, 3))));
@@ -132,6 +158,8 @@ function draw() {
     draw1();
   } else if (stageNum === 1) {
     draw2();
+  } else if (stageNum == 2) {
+    draw3();
   } else if (stageNum === 3) {
     draw4();
   }
@@ -140,7 +168,7 @@ function draw() {
 function mouseClicked() {
 
 
-  if (stageNum == 1 && stage1sceneNum == 0 || stageNum == 3 && stage3sceneNum == 0) {
+  if (stageNum == 1 && stage1sceneNum == 0 || stageNum == 3 && stage3sceneNum == 0||stageNum==2&&stage2sceneNum==0) { //스테이지별 시작 타이틀 화면 조건
     startButton.checkClick();
 
   }
@@ -166,8 +194,36 @@ function mouseClicked() {
     if (mouseX >= btnX - btnW / 2 && mouseX <= btnX + btnW / 2 &&
       mouseY >= btnY - btnH / 2 && mouseY <= btnY + btnH / 2) {
       if (!dialogue3.next()) {
-        stageNum = 3;
+        stageNum = 2;
         needSt1Panel = true; //패널을 미리 한 번 켜놔야 함
+      }
+    }
+  }
+
+  if (stageNum === 2 && stage2sceneNum === 1) {//2스테이지 시작 대화 제어
+    const btnX = width - 170;
+    const btnY = height - 50;
+    const btnW = 80;
+    const btnH = 30;
+
+    if (mouseX >= btnX - btnW / 2 && mouseX <= btnX + btnW / 2 &&
+      mouseY >= btnY - btnH / 2 && mouseY <= btnY + btnH / 2) {
+      if (!dialogue4.next()) {
+        stage2sceneNum = 2; // 
+      }
+    }
+  }
+ else if (stageNum === 2 && stage2sceneNum === 3) { //2스테 미니게임 끝나고
+    const btnX = width - 170;
+    const btnY = height - 50;
+    const btnW = 80;
+    const btnH = 30;
+
+    if (mouseX >= btnX - btnW / 2 && mouseX <= btnX + btnW / 2 &&
+      mouseY >= btnY - btnH / 2 && mouseY <= btnY + btnH / 2) {
+      if (!dialogue5.next()) {
+        stageNum = 3;
+        needSt1Panel = true; 
       }
     }
   }
