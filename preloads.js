@@ -27,6 +27,15 @@ function preload1() {
     butter = loadImage('assets/stage1/butter.png');
 }
 
+function preload2() {
+    goldCropImg = loadImage("assets/stage2/goldCrop.png");
+    normalCropImg = loadImage("assets/stage2/crop.png");
+    darkCropImg = loadImage("assets/stage2/darkCrop.png");
+    equipmentImg = loadImage("assets/stage2/equipment.png");
+    scoreBoard = loadImage("assets/stage2/scoreboard.png");
+    noWomanbg = loadImage("assets/stage2/nowoman_bg_red.png");
+    womanbg= loadImage("assets/stage2/woman_bg.png");
+
 function preload3() {
     man_bg = loadImage('assets/stage3/man_bg.png');
     man_face_bg = loadImage('assets/stage3/man_face_bg.png');
