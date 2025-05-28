@@ -54,6 +54,7 @@ let remainingTime2 = 60;
 let clickedThisFrame = false;
 let needSt1Panel = true;
 let lastTimeChecked2 = 0;
+let stage2sceneNum = 0;
 let normalCropImg, goldCropImg, darkCropImg;
 let equipmentImg, scoreBoard, noWomanbg;
 
