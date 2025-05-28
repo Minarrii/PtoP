@@ -39,6 +39,7 @@ function preload2() {
 
 }
 
+
 function preload3() {
     man_bg = loadImage('assets/stage3/man_bg.png');
     man_face_bg = loadImage('assets/stage3/man_face_bg.png');

@@ -57,6 +57,9 @@ let st2SuccessPoint= 10;
 //
 let normalCropImg, goldCropImg, darkCropImg;
 let equipmentImg, scoreBoard, noWomanbg, womanbg;
+
+
+
 //3스테이지
 let stage3sceneNum = 0;
 let man_bg, man_face_bg, bird, pipe, greenApple, retroCamera, darkCamera;
