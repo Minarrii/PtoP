@@ -252,7 +252,7 @@ function draw3() {
             //패널 클릭 시 액션
             if (mouseX >= 400 && mouseX <= 600 && mouseY >= 320 && mouseY <= 380 && mouseIsPressed) {
                 needSt1Panel = false;  //시작 전이라면 게임 시작!
-                if (score2 == st2SuccessPoint) {
+                if (score2 >=st2SuccessPoint) {
                     stage2sceneNum = 3; //성공한 경우라면 다음 씬으로! 
                     needSt1Panel = false;
                 }
@@ -386,7 +386,7 @@ function draw4() {
                 text(timeStr, width - 105, 40); // 오른쪽 위에 출력
 
                 //사물들
-                line(width / 2 - 110, 0, width / 2 - 110, 300) //표시선, 추후 삭제 가능
+                line(width / 2 - 120, 0, width / 2 - 120, 300) //표시선, 추후 삭제 가능
                 line(width / 2 + 40, 0, width / 2 + 40, 300)
                 for (let t of targets) {
                     t.move();     // 위치 업데이트
@@ -394,7 +394,7 @@ function draw4() {
                 }
 
                 textSize(18)
-                image(greenApple, 0, 0, 60, 60);
+                image(greenApple, 0, 10, 40, 40);
                 text(": +1", 40, 40);
                 image(face, 85, 18, 30, 30);
                 text(": +2", 120, 40);

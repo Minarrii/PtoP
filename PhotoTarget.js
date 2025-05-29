@@ -15,11 +15,11 @@ relocate(){
   }
 
   display() {
-   image(this.img, this.x, this.y, 100, 150);
+   image(this.img, this.x, this.y, 150, 150);
   }
 
   isInFrame() {
-    return this.x > width/2 - 110 && this.x < width/2 + 40;
+    return this.x > width/2 - 120 && this.x < width/2 + 40;
   }
 
  

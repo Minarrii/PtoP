@@ -34,7 +34,7 @@ let needSt1Panel = true;
 let st1Timer = 0;
 let lastTimeChecked; //1스테 타이머 변수
 let remainingTime = 60;
-let st1SuccessPoint = 1;
+let st1SuccessPoint = 5;
 //다이얼로그
 let dialogue1;
 let dialogue2;
@@ -53,7 +53,7 @@ let score2 = 0;
 let remainingTime2 = 60;
 let clickedThisFrame = false;
 let lastTimeChecked2 = 0;
-let st2SuccessPoint= 10;
+let st2SuccessPoint= 40;
 //
 let normalCropImg, goldCropImg, darkCropImg;
 let equipmentImg, scoreBoard, noWomanbg, womanbg;
@@ -67,7 +67,7 @@ let score3 = 0;
 let lastTimeChecked3;//3스테 타이머 변수
 let st3Timer = 0;
 let remainingTime3 = 60;
-let st3SuccessPoint = 5;
+let st3SuccessPoint = 10;
 let cameraButton;
 let targetImages = [];
 let targets = [];

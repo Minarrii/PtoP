@@ -46,7 +46,7 @@ function preload3() {
     bird = loadImage('assets/stage3/bird.png');
     face = loadImage('assets/stage3/face.png');
     pipe = loadImage('assets/stage3/pipe.png');
-    greenApple = loadImage('assets/stage3/green apple.png');
+    greenApple = loadImage('assets/stage3/bigger green apple.png');
     retroCamera = loadImage('assets/stage3/camera screen.png');
     darkCamera = loadImage('assets/stage3/dark camera screen.png');
     targetImages[0] = greenApple;
