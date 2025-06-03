@@ -1,5 +1,5 @@
 
-let stageNum = 1; //스테이지 관리  나중에 바꾸셈
+let stageNum = 3; //스테이지 관리  나중에 바꾸셈
 let slide = 0;
 //대화 시스템 관련
 let ghostImg, shakeSound;
@@ -64,7 +64,7 @@ let equipmentImg, scoreBoard, noWomanbg, womanbg;
 
 //3스테이지
 let stage3sceneNum = 0;
-let man_bg, man_face_bg, bird, pipe, greenApple, retroCamera, darkCamera;
+let man_bg, man_face_bg, bird, pipe, greenApple, retroCamera, darkCamera, flash;
 let score3 = 0;
 let lastTimeChecked3;//3스테 타이머 변수
 let st3Timer = 0;
@@ -73,6 +73,7 @@ let st3SuccessPoint = 10;
 let cameraButton;
 let targetImages = [];
 let targets = [];
+let clickCooltime = 0;
 
 
 
@@ -107,27 +108,38 @@ function setup() {
   });
 
   cameraButton = new Button(darkCamera, retroCamera, width / 2 - 200, height * 2 / 5 + 100, retroCamera.width / 3, retroCamera.height / 3, () => {
-    let validTarget = targets.find(t =>
-      t.isInFrame() && t.x > width / 2 - 110 && t.x < width / 2 + 40
-    );
+    
 
+  if (clickCooltime === 0) {
+ 
+  // 0.8초 후 쿨타임 해제
+  setTimeout(() => {
+    clickCooltime = 0;
+  }, 800);
 
+  // 이 안에서 타겟 탐색도 같이!
+  let validTarget = targets.find(t =>
+    t.isInFrame() && t.x > width / 2 - 150 && t.x < width / 2 + 40
+  );
 
-    if (validTarget) {
-      console.log("일단 인식함");
-      if (validTarget.imgNum === 0) {  // 0: greenApple
-        score3 += 1;
-        console.log("사과 발견! 점수 +1");
-      } else if (validTarget.imgNum === 1) {  // 1: bird
-        score3 -= 2;
-        console.log("새 발견! 점수 -2");
-      } else if (validTarget.imgNum === 2) {
-        console.log("얼굴발견! 점수 +2");
-        score3 += 2;
-      }
-    } else {
-      console.log("해당 영역에 타겟 없음");
+  if (validTarget) {
+    console.log("일단 인식함");
+     clickCooltime = 1;
+    if (validTarget.imgNum === 0) {
+      score3 += 1;
+      console.log("사과 발견! 점수 +1");
+    } else if (validTarget.imgNum === 1) {
+      score3 -= 2;
+      console.log("새 발견! 점수 -2");
+    } else if (validTarget.imgNum === 2) {
+      score3 += 2;
+      console.log("얼굴발견! 점수 +2");
     }
+  } else {
+    console.log("해당 영역에 타겟 없음");
+  }
+}
+
   });
 
 

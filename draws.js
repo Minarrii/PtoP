@@ -371,8 +371,8 @@ function draw4() {
             textAlign(LEFT);
             text("찍은 사진:" + score3 + " 장", 720, 50);
 
-
-
+            //플래시 이펙트
+            if (clickCooltime <= 1 && clickCooltime >= 0.5)image(flash, cameraButton.x + 150, cameraButton.y + 20, 150, 150)
 
             //시작 전, 성공, 실패 상태에 따라 패널의 내용을 변경
             if (score3 == 0 && remainingTime3 != 0) drawSt1Panel("카메라를 클릭해 사진을 찍자.", "남자의 얼굴이 완전히 가려졌을 때 찍어야 한다.", "START");

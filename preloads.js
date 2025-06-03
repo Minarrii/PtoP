@@ -60,4 +60,5 @@ function preload3() {
     targetImages[0] = greenApple;
     targetImages[1] = bird;
     targetImages[2] = face;
+    flash=loadImage('assets/stage3/flash.png');
 }
