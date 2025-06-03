@@ -58,10 +58,9 @@ function draw2() {
             image(bawl, 130, -140, 600, 900);//그릇
             //우유 그리기
             if (score == 0) image(bubble, 160, -80, 540, 810);
-            else if (score == 1) image(milk2, 170, -100, 540, 810);
-            else if (score == 2) image(milk3, 160, -120, 520, 800);
-            else if (score == 3) image(milk4, 160, 0, 540, 610);
-            else if (score >= 4) image(milk5, 160, -80, 540, 810);
+            else if (score == 1 || score == 2) image(milk2, 170, -100, 540, 810);
+            else if (score == 3 || score == 4) image(milk3, 160, -120, 520, 800);
+            else if (score >= 5) image(milk5, 160, -80, 540, 810);
 
 
             //점수판 구현
@@ -69,7 +68,7 @@ function draw2() {
             textSize(24);
             textAlign(LEFT);
             fill(255)
-            text("남은 버터:" + score+'/'+st1SuccessPoint + " 개", 700, 100);
+            text("남은 버터:" + score + '/' + st1SuccessPoint + " 개", 700, 100);
 
             //마우스를 따라다니는 거품기
             let whiskOffsetX = 120;
@@ -106,6 +105,7 @@ function draw2() {
                     lastTimeChecked = millis();
                 }
                 // 타이머 텍스트 형식 (00:59 형식)
+                textSize(30);
                 let min = floor(remainingTime / 60);
                 let sec = remainingTime % 60;
                 let timeStr = nf(min, 2) + ":" + nf(sec, 2);
