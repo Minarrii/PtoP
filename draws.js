@@ -56,13 +56,20 @@ function draw2() {
             //배경 사물
             image(doma, 0, 0, width, height); //배경 도마
             image(bawl, 130, -140, 600, 900);//그릇
-            image(bubble, 160, -80, 540, 810); //우유
+            //우유 그리기
+            if (score == 0) image(bubble, 160, -80, 540, 810);
+            else if (score == 1) image(milk2, 170, -100, 540, 810);
+            else if (score == 2) image(milk3, 160, -120, 520, 800);
+            else if (score == 3) image(milk4, 160, 0, 540, 610);
+            else if (score >= 4) image(milk5, 160, -80, 540, 810);
+
 
             //점수판 구현
             image(scoreBoard, 500, 30, 500, 120);
-            textSize(30);
+            textSize(24);
             textAlign(LEFT);
-            text("만든 버터:" + score + " 개", 700, 100);
+            fill(255)
+            text("남은 버터:" + score+'/'+st1SuccessPoint + " 개", 700, 100);
 
             //마우스를 따라다니는 거품기
             let whiskOffsetX = 120;
@@ -133,9 +140,8 @@ function draw2() {
                 prevAngle = currAngle;
 
                 // 게이지 처리
-                targetSpeed = 0.3;
                 if (angularVelocity >= targetSpeed) {
-                    gaugeValue += 1.0;  // 천천히 증가
+                    gaugeValue += 1;  // 천천히 증가
                 } else if (angularVelocity < targetSpeed && gaugeValue > 2) {
                     gaugeValue -= 2.0;  // 빠르게 감소
                 } else gaugeValue = 0;
@@ -146,7 +152,6 @@ function draw2() {
             gaugeTopY = 540 - gaugeHeight;
 
             //게이지 존
-            let gaugeZone = new Gauge(board, 913, gaugeZoneY, 82, gaugeZoneH);
             gaugeZone.display();
 
 
@@ -166,6 +171,26 @@ function draw2() {
             textSize(40);
             text("STAGE 1", 30, 50);
 
+            //시간이 30초가 되면!
+            if (remainingTime <= 30 && remainingTime >= 25) {
+
+                fill(255)
+                rect(200, 400, 300, 80, 20)
+                triangle(200, 440, 290, 455, 170, 500)
+                fill(0)
+                textSize(18)
+                text("우유가 굳고 있어. 더 빨리 저어야 해!", 205, 450)
+                image(hurryUp, width / 7 - 150, height * 3 / 4, 200, 150)
+                targetSpeed = 0.5
+            }
+
+            //hard mode:판때기 움직이기
+            if (score >= 3) {
+                if (gaugeZone.y >= 320) gaugeDirection = -1;
+                else if (gaugeZone.y <= 30) gaugeDirection = 1;
+
+                gaugeZone.transPos(3 * gaugeDirection); // 매 프레임마다 조금씩 움직임
+            }
 
             //성공 실패 판정
             if (score == st1SuccessPoint && remainingTime >= 0) {//성공
@@ -252,7 +277,7 @@ function draw3() {
             //패널 클릭 시 액션
             if (mouseX >= 400 && mouseX <= 600 && mouseY >= 320 && mouseY <= 380 && mouseIsPressed) {
                 needSt1Panel = false;  //시작 전이라면 게임 시작!
-                if (score2 >=st2SuccessPoint) {
+                if (score2 >= st2SuccessPoint) {
                     stage2sceneNum = 3; //성공한 경우라면 다음 씬으로! 
                     needSt1Panel = false;
                 }
@@ -260,7 +285,7 @@ function draw3() {
                     resetGame();
                 }
             }
-            if (!needSt1Panel&&mouseIsPressed) {
+            if (!needSt1Panel && mouseIsPressed) {
                 for (let i = 0; i < cropGrid.length; i++) {
                     if (cropGrid[i] && cropGrid[i].checkClick(mouseX, mouseY)) break; // 그냥 게임중 아무 패널 안 보이는 상태
                 }
@@ -432,7 +457,11 @@ function draw4() {
 
 }
 
-
+function draw5() {
+    background(255)
+    text("요리 화면으로 진입! 여기에서 바로 작업하시면 되겠습니다!", width / 2, height / 2)
+    //위 두줄은 지우시고 하시면 됩니다
+}
 function drawSt1Panel(text1, text2, text3) {
     if (needSt1Panel) {
         fill(210, 214, 211, 200);

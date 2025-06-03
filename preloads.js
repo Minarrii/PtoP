@@ -25,17 +25,25 @@ function preload1() {
     gauge = loadImage('assets/stage1/gauge.png');
     board = loadImage('assets/stage1/board.png');
     butter = loadImage('assets/stage1/butter.png');
+    milkWoman = createVideo(['assets/stage1/milk_moving.mov']);
+    milkWoman.hide(); //DOM에 표시되는 걸 막기 위함
+    milk2 = loadImage('assets/stage1/milk_2.png');
+    milk3 = loadImage('assets/stage1/milk_3.png');
+    milk4 = loadImage('assets/stage1/milk_4.png');
+    milk5 = loadImage('assets/stage1/milk_5.png');
+    hurryUp=loadImage('assets/stage1/Hurry up_ghost.png');
+
 }
 
 function preload2() {
-  womanbg=loadImage("assets/stage2/woman_bg.png")
-  goldCropImg = loadImage("assets/stage2/goldCrop.png");
-  normalCropImg = loadImage("assets/stage2/crop.png");
-  darkCropImg = loadImage("assets/stage2/darkCrop.png");
-  equipmentImg = loadImage("assets/stage2/equipment.png");
-  scoreBoard = loadImage("assets/stage2/scoreboard.png");
-  noWomanbg = loadImage("assets/stage2/nowoman_bg_red.png");
-  
+    womanbg = loadImage("assets/stage2/woman_bg.png")
+    goldCropImg = loadImage("assets/stage2/goldCrop.png");
+    normalCropImg = loadImage("assets/stage2/crop.png");
+    darkCropImg = loadImage("assets/stage2/darkCrop.png");
+    equipmentImg = loadImage("assets/stage2/equipment.png");
+    scoreBoard = loadImage("assets/stage2/scoreboard.png");
+    noWomanbg = loadImage("assets/stage2/nowoman_bg_red.png");
+
 
 }
 

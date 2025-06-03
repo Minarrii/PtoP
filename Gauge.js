@@ -19,8 +19,8 @@ class Gauge {
 
 
     nextZone(nextY, nextH) {  //게이지 존 위치 재설정
-        gaugeZoneY = nextY;
-        gaugeZoneH = nextH;
+        this.y = nextY;
+        this.h = nextH;
     }
 
     zoneCheck(gaugeTopY) {

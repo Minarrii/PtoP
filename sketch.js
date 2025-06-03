@@ -1,5 +1,5 @@
 
-let stageNum = 0; //스테이지 관리  나중에 바꾸셈
+let stageNum = 1; //스테이지 관리  나중에 바꾸셈
 let slide = 0;
 //대화 시스템 관련
 let ghostImg, shakeSound;
@@ -14,14 +14,14 @@ let inputBox;
 let dialogueBoxImg, nextButtonImg;
 let myFont;
 //1스테이지
-let titleBack, startBut, startButCl, art, doma, bubble, bawl, whisk, gauge, board, butter;
+let titleBack, startBut, startButCl, art, doma, bubble, bawl, whisk, gauge, board, butter, milkWoman, milk2, milk3, milk4, milk5, hurryUp;
 let score = 0;
 let centerX = 420;
 let centerY = 300;
 let prevAngle = 0;
 let angularVelocity = 0;
 let gaugeValue = 0;
-let targetSpeed = 0;
+let targetSpeed = 0.3;
 let accumTime = 0;
 let gaugeZoneY = 0;
 let gaugeZoneH = 0;
@@ -34,7 +34,9 @@ let needSt1Panel = true;
 let st1Timer = 0;
 let lastTimeChecked; //1스테 타이머 변수
 let remainingTime = 60;
-let st1SuccessPoint = 5;
+let st1SuccessPoint = 6;
+let gaugeZone;
+let gaugeDirection = 1;
 //다이얼로그
 let dialogue1;
 let dialogue2;
@@ -53,7 +55,7 @@ let score2 = 0;
 let remainingTime2 = 60;
 let clickedThisFrame = false;
 let lastTimeChecked2 = 0;
-let st2SuccessPoint= 40;
+let st2SuccessPoint = 40;
 //
 let normalCropImg, goldCropImg, darkCropImg;
 let equipmentImg, scoreBoard, noWomanbg, womanbg;
@@ -109,6 +111,8 @@ function setup() {
       t.isInFrame() && t.x > width / 2 - 110 && t.x < width / 2 + 40
     );
 
+
+
     if (validTarget) {
       console.log("일단 인식함");
       if (validTarget.imgNum === 0) {  // 0: greenApple
@@ -134,12 +138,15 @@ function setup() {
   inputBox.class('customInput');
   inputBox.hide();
 
+  //1스테 게이지존
   for (let i = 0; i < 99; i++) {
-    zoneYArray[i] = random(30, 300);
-    zoneHArray[i] = random(90, 180);
+    zoneYArray[i] = random(60, 300);
+    zoneHArray[i] = random(80, 160);
   }
   gaugeZoneY = zoneYArray[0];
   gaugeZoneH = zoneHArray[0];
+
+  gaugeZone = new Gauge(board, 913, gaugeZoneY, 82, gaugeZoneH);
 
   lastTimeChecked = millis();
   lastTimeChecked3 = millis();
@@ -165,13 +172,15 @@ function draw() {
     draw3();
   } else if (stageNum === 3) {
     draw4();
+  } else if (stageNum === 4) {
+    draw5();
   }
 }
 
 function mouseClicked() {
 
 
-  if (stageNum == 1 && stage1sceneNum == 0 || stageNum == 3 && stage3sceneNum == 0||stageNum==2&&stage2sceneNum==0) { //스테이지별 시작 타이틀 화면 조건
+  if (stageNum == 1 && stage1sceneNum == 0 || stageNum == 3 && stage3sceneNum == 0 || stageNum == 2 && stage2sceneNum == 0) { //스테이지별 시작 타이틀 화면 조건
     startButton.checkClick();
 
   }
@@ -216,7 +225,7 @@ function mouseClicked() {
       }
     }
   }
- else if (stageNum === 2 && stage2sceneNum === 3) { //2스테 미니게임 끝나고
+  else if (stageNum === 2 && stage2sceneNum === 3) { //2스테 미니게임 끝나고
     const btnX = width - 170;
     const btnY = height - 50;
     const btnW = 80;
@@ -226,7 +235,7 @@ function mouseClicked() {
       mouseY >= btnY - btnH / 2 && mouseY <= btnY + btnH / 2) {
       if (!dialogue5.next()) {
         stageNum = 3;
-        needSt1Panel = true; 
+        needSt1Panel = true;
       }
     }
   }
@@ -254,7 +263,6 @@ function mouseClicked() {
     if (mouseX >= btnX - btnW / 2 && mouseX <= btnX + btnW / 2 &&
       mouseY >= btnY - btnH / 2 && mouseY <= btnY + btnH / 2) {
       if (!dialogue7.next()) {
-        console.log("끝!")
         stageNum = 4;
         //needSt1Panel = true; 
       }
