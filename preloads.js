@@ -25,8 +25,7 @@ function preload1() {
     gauge = loadImage('assets/stage1/gauge.png');
     board = loadImage('assets/stage1/board.png');
     butter = loadImage('assets/stage1/butter.png');
-    milkWoman = createVideo(['assets/stage1/milk_moving.mov']);
-    milkWoman.hide(); //DOM에 표시되는 걸 막기 위함
+    milkWoman = createVideo(['assets/stage1/milkmilk.mp4']);
     milk2 = loadImage('assets/stage1/milk_2.png');
     milk3 = loadImage('assets/stage1/milk_3.png');
     milk4 = loadImage('assets/stage1/milk_4.png');
@@ -43,6 +42,7 @@ function preload2() {
     equipmentImg = loadImage("assets/stage2/equipment.png");
     scoreBoard = loadImage("assets/stage2/scoreboard.png");
     noWomanbg = loadImage("assets/stage2/nowoman_bg_red.png");
+    cropcrop = createVideo(['assets/stage2/cropcrop.mp4'])
 
 
 }
@@ -60,5 +60,6 @@ function preload3() {
     targetImages[0] = greenApple;
     targetImages[1] = bird;
     targetImages[2] = face;
+    targetImages[3] = pipe;
     flash=loadImage('assets/stage3/flash.png');
 }

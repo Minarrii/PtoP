@@ -42,7 +42,7 @@ function draw2() {
 
             break;
         case 1:
-            image(art, 0, 0, width, height);
+            image(milkWoman, 0, 0, width, height);
             textAlign(LEFT);
             fill("white");
             textSize(40);
@@ -203,7 +203,7 @@ function draw2() {
             break;
         case 3:
             //미술관으로 복귀
-            if (dialogue3.index == 0) image(art, 0, 0, width, height);
+            if (dialogue3.index == 0) image(milkWoman, 0, 0, width, height);
             else {
                 background(255);
                 imageMode(CENTER);
@@ -236,7 +236,7 @@ function draw3() {
 
         case 1:
             imageMode(CORNER);
-            image(womanbg, 0, 0, width, height);
+            image(cropcrop, 0, 0, width, height);
             textAlign(LEFT);
             fill("white");
             textSize(40);
@@ -316,7 +316,7 @@ function draw3() {
         case 3:
             //미술관으로 복귀
             imageMode(CORNER);
-            if (dialogue5.index == 0) image(womanbg, 0, 0, width, height);
+            if (dialogue5.index == 0) image(cropcrop, 0, 0, width, height);
             else {
                 background(255);
                 imageMode(CENTER);
@@ -372,7 +372,7 @@ function draw4() {
             text("찍은 사진:" + score3 + " 장", 720, 50);
 
             //플래시 이펙트
-            if (clickCooltime <= 1 && clickCooltime >= 0.5)image(flash, cameraButton.x + 150, cameraButton.y + 20, 150, 150)
+            if (clickCooltime <= 1 && clickCooltime >= 0.5) image(flash, cameraButton.x + 150, cameraButton.y + 20, 150, 150)
 
             //시작 전, 성공, 실패 상태에 따라 패널의 내용을 변경
             if (score3 == 0 && remainingTime3 != 0) drawSt1Panel("카메라를 클릭해 사진을 찍자.", "남자의 얼굴이 완전히 가려졌을 때 찍어야 한다.", "START");
@@ -425,6 +425,8 @@ function draw4() {
                 text(": +2", 120, 40);
                 image(bird, 163, 15, 30, 30);
                 text(": -2", 200, 40);
+                image(pipe, 240, 15, 40, 30)
+                text(": -1", 280, 40)
             }
 
 
