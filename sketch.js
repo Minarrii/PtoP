@@ -34,7 +34,7 @@ let needSt1Panel = true;
 let st1Timer = 0;
 let lastTimeChecked; //1스테 타이머 변수
 let remainingTime = 60;
-let st1SuccessPoint = 6;
+let st1SuccessPoint = 1;
 let gaugeZone;
 let gaugeDirection = 1;
 //다이얼로그
@@ -45,6 +45,8 @@ let dialogue4;
 let dialogue5;
 let dialogue6;
 let dialogue7;
+let dialogue8;
+let dialogue9;
 //2stage
 let cropcrop;
 let stage2sceneNum = 0;
@@ -56,7 +58,7 @@ let score2 = 0;
 let remainingTime2 = 60;
 let clickedThisFrame = false;
 let lastTimeChecked2 = 0;
-let st2SuccessPoint = 40;
+let st2SuccessPoint = 5;
 //
 let normalCropImg, goldCropImg, darkCropImg;
 let equipmentImg, scoreBoard, noWomanbg, womanbg;
@@ -70,7 +72,7 @@ let score3 = 0;
 let lastTimeChecked3;//3스테 타이머 변수
 let st3Timer = 0;
 let remainingTime3 = 60;
-let st3SuccessPoint = 10;
+let st3SuccessPoint = 2;
 let cameraButton;
 let targetImages = [];
 let targets = [];
@@ -107,6 +109,7 @@ function preload() {
   preload1();
   preload2();
   preload3();
+  preload4();
 
 }
 
