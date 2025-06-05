@@ -42,7 +42,7 @@ function draw2() {
 
             break;
         case 1:
-            image(milkWoman, 0, 0, width, height);
+            image(art, 0, 0, width, height);
             textAlign(LEFT);
             fill("white");
             textSize(40);
@@ -203,7 +203,7 @@ function draw2() {
             break;
         case 3:
             //미술관으로 복귀
-            if (dialogue3.index == 0) image(milkWoman, 0, 0, width, height);
+            if (dialogue3.index == 0) image(art, 0, 0, width, height);
             else {
                 background(255);
                 imageMode(CENTER);
@@ -236,7 +236,7 @@ function draw3() {
 
         case 1:
             imageMode(CORNER);
-            image(cropcrop, 0, 0, width, height);
+            image(womanbg, 0, 0, width, height);
             textAlign(LEFT);
             fill("white");
             textSize(40);
@@ -316,7 +316,7 @@ function draw3() {
         case 3:
             //미술관으로 복귀
             imageMode(CORNER);
-            if (dialogue5.index == 0) image(cropcrop, 0, 0, width, height);
+            if (dialogue5.index == 0) image(womanbg, 0, 0, width, height);
             else {
                 background(255);
                 imageMode(CENTER);
