@@ -25,7 +25,7 @@ function preload1() {
     gauge = loadImage('assets/stage1/gauge.png');
     board = loadImage('assets/stage1/board.png');
     butter = loadImage('assets/stage1/butter.png');
-    milkWoman = createVideo('assets/stage1/milkmilk.mp4');
+    milkWoman = createVideo(['assets/stage1/milkmilk.mp4']);
     milk2 = loadImage('assets/stage1/milk_2.png');
     milk3 = loadImage('assets/stage1/milk_3.png');
     milk4 = loadImage('assets/stage1/milk_4.png');
@@ -42,7 +42,7 @@ function preload2() {
     equipmentImg = loadImage("assets/stage2/equipment.png");
     scoreBoard = loadImage("assets/stage2/scoreboard.png");
     noWomanbg = loadImage("assets/stage2/nowoman_bg_red.png");
-    cropcrop = createVideo('assets/stage2/cropcrop.mp4')
+    cropcrop = createVideo(['assets/stage2/cropcrop.mp4'])
 
 
 }
