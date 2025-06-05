@@ -460,10 +460,89 @@ function draw4() {
 }
 
 function draw5() {
-    background(255)
-    text("요리 화면으로 진입! 여기에서 바로 작업하시면 되겠습니다!", width / 2, height / 2)
-    //위 두줄은 지우시고 하시면 됩니다
-}
+    switch(stage4sceneNum) {
+      case 0: 
+        background(220);
+        imageMode(CORNER);
+
+        if (frame === 0) {
+            image(cooking_bg, 0, 0, width, height);
+        }else if (frame === 1) {
+          image(butter_bg, 0, 0, width, height);
+        } else if (frame === 2) {
+          image(cooking_bg, 0, 0, width, height);
+        } else if (frame === 3) {
+          image(pie_bg, 0, 0, width, height);
+        } else if (frame === 4) {
+          image(applepie_bg, 0, 0, width, height);
+  
+          //버튼 생기기
+          if (stage4sceneNum === 0 && frame === 4) {
+            const btnX = width - 170;
+            const btnY = height - 50;
+            const btnW = 80;
+            const btnH = 30;
+            image(nextButtonImg, btnX, btnY, btnW, btnH);
+          }
+                 
+         
+        }
+      
+        image(cookingghostImg, ghostPos.x, ghostPos.y, ghostPos.w, ghostPos.h);
+        image(chatImg, chatPos.x, chatPos.y, chatPos.w, chatPos.h);
+  
+        fill(0);
+        noStroke();
+        textSize(18);
+        textAlign(CENTER);
+        text(dialogue8List[frame].text, chatPos.x + 20, chatPos.y + 25, chatPos.w - 40, chatPos.h - 40);
+  
+        // 요리 재료
+        if (frame === 0) {
+          if (!draggable || draggable.name !== 'butter') image(butterImg, butterPos.x, butterPos.y, butterPos.w, butterPos.h);
+          image(flourImg, flourPos.x, flourPos.y, flourPos.w, flourPos.h);
+          image(appleImg, applePos.x, applePos.y, applePos.w, applePos.h);
+        } else if (frame === 1) {
+          if (!draggable || draggable.name !== 'flour') image(flourImg, flourPos.x, flourPos.y, flourPos.w, flourPos.h);
+          image(appleImg, applePos.x, applePos.y, applePos.w, applePos.h);
+        } else if (frame === 2) {
+          image(appleImg, applePos.x, applePos.y, applePos.w, applePos.h);
+          if (!draggable || draggable.name !== 'banjuk') image(banjukImg, banjukPos.x, banjukPos.y, banjukPos.w, banjukPos.h);
+        } else if (frame === 3) {
+          if (!draggable || draggable.name !== 'apple') image(appleImg, applePos.x, applePos.y, applePos.w, applePos.h);
+        }
+  
+        if (draggable) {
+          draggable.x = mouseX + dragOffsetX;
+          draggable.y = mouseY + dragOffsetY;
+          image(draggable.img, draggable.x, draggable.y, draggable.w, draggable.h);
+        }
+  
+        noFill();
+        noStroke();
+        ellipse(bowlCenter.x, bowlCenter.y, bowlRadiusX * 2, bowlRadiusY * 2);
+        ellipse(pieTrayCenter.x, pieTrayCenter.y, pieTrayRadiusX * 2, pieTrayRadiusY * 2);
+  
+        image(handImg, mouseX - 20, mouseY - 10, 40, 40);
+  
+        break;
+  
+      case 1: // Oven scene with alternating backgrounds + dialogue9
+        // Alternate background every 30 frames or time-based
+        if (frameCount % 60 < 30) {
+          image(oven_darkbg, width/2, height/2, width, height);
+        } else {
+          image(oven_lightbg, width/2, height/2, width, height);
+        }
+  
+        dialogue9.start();
+        dialogue9.display(playerName, dialogueBoxImg, nextButtonImg);
+  
+        break;
+  
+      
+    }
+  }
 function drawSt1Panel(text1, text2, text3) {
     if (needSt1Panel) {
         fill(210, 214, 211, 200);
