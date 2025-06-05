@@ -63,3 +63,22 @@ function preload3() {
     targetImages[3] = pipe;
     flash=loadImage('assets/stage3/flash.png');
 }
+
+function preload4() {
+    cooking_bg = loadImage('assets/cooking/cooking_bg.png');
+    butter_bg = loadImage('assets//cooking/butter_bg.png');
+    pie_bg = loadImage('assets/cooking/pie_bg.png');
+    applepie_bg = loadImage('assets/cooking/applepie_bg.png');
+  
+    butterImg = loadImage('assets/cooking/butter.png');
+    flourImg = loadImage('assets/cooking/flour.png');
+    appleImg = loadImage('assets/cooking/red_apple.png');
+    banjukImg = loadImage('assets/cooking/banjuk.png');
+  
+    cookingghostImg = loadImage('assets/cooking/cooking_gst.png');
+    chatImg = loadImage('assets/cooking/chat.png');
+    handImg = loadImage('assets/cooking/hand.png');
+    oven_darkbg= loadImage('assets/cooking/oven_pie_dark.png')
+    oven_lightbg= loadImage('assets/cooking/oven_pie_light.png')
+  
+  }
