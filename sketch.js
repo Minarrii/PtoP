@@ -76,6 +76,30 @@ let targetImages = [];
 let targets = [];
 let clickCooltime = 0;
 
+//cookingstage
+// cooking stage globals
+let frame = 0;
+let draggable = null;
+let dragOffsetX = 0;
+let dragOffsetY = 0;
+let stage4sceneNum = 0; 
+
+// Positions (copy from cooking stage)
+let butterPos = {x: 510, y: 30, w: 160, h: 160};
+let flourPos = {x: 665, y: 25, w: 150, h: 160};
+let applePos = {x: 820, y: 25, w: 140, h: 160};
+let ghostPos = {x:0, y: 0, w: 180, h: 180};
+let chatPos = {x: 170, y: 15, w: 280, h: 140};
+
+let bowlCenter = {x: 260, y: 280};
+let bowlRadiusX = 180;
+let bowlRadiusY = 100;
+
+let pieTrayCenter = {x: 730, y: 360};
+let pieTrayRadiusX = 205;
+let pieTrayRadiusY = 110;
+
+let banjukPos = {x: 111, y: 185.5, w: 300, h: 191};
 
 
 function preload() {
@@ -100,6 +124,8 @@ function setup() {
   dialogue5 = new Dialogue(dialogue5List);
   dialogue6 = new Dialogue(dialogue6List);
   dialogue7 = new Dialogue(dialogue7List);
+  dialogue8 = new Dialogue(dialogue8List);
+  dialogue9 = new Dialogue(dialogue9List);
 
   startButton = new Button(startBut, startButCl, width / 2 - 140, height * 4 / 5 - 50, 300, 100, () => {
     if (stageNum == 1) stage1sceneNum = 1;
@@ -296,6 +322,33 @@ function mouseClicked() {
     cameraButton.checkClick();
   }
   // 추후 게임 인터랙션 등을 여기에 추가 가능
+  if (stageNum === 4 && stage4sceneNum === 0 && frame === 4) {//요리씬 마지막에 나오는 다음 버튼
+    const btnX = width - 170;
+    const btnY = height - 50;
+    const btnW = 80;
+    const btnH = 30;
+  
+    if (mouseX >= btnX - btnW / 2 && mouseX <= btnX + btnW / 2 &&
+        mouseY >= btnY - btnH / 2 && mouseY <= btnY + btnH / 2) {
+      stage4sceneNum = 1; // 다음 씬으로 전환
+    }
+  }
+  
+  else if (stageNum === 4 && stage4sceneNum === 1) { //3스테 미니게임 끝나고
+    const btnX = width - 170;
+    const btnY = height - 50;
+    const btnW = 80;
+    const btnH = 30;
+
+    if (mouseX >= btnX - btnW / 2 && mouseX <= btnX + btnW / 2 &&
+      mouseY >= btnY - btnH / 2 && mouseY <= btnY + btnH / 2) {
+      if (!dialogue9.next()) {
+        stageNum = 5;
+        //needSt1Panel = true; 
+      }
+    }
+  }
+  
 }
 
 
@@ -337,3 +390,90 @@ function mousePressed() {
     }
   }
 }
+function mouseReleased() {
+  if (stageNum === 4) {
+    cookingMouseReleased();
+  }
+ //에셋 그릇에 놓을 때
+}
+
+
+function cookingMousePressed() {
+  if (!draggable) {
+    if (frame === 0 && mouseInRect(butterPos)) {
+      startDrag('butter', butterImg, butterPos);
+    } else if (frame === 1 && mouseInRect(flourPos)) {
+      startDrag('flour', flourImg, flourPos);
+    } else if (frame === 2 && mouseInRect(banjukPos)) {
+      startDrag('banjuk', banjukImg, banjukPos);
+    } else if (frame === 3 && mouseInRect(applePos)) {
+      startDrag('apple', appleImg, applePos);
+    }
+  }
+}
+
+function cookingMouseReleased() {
+  if (draggable) {
+    let success = false;
+
+    if (frame === 0 && draggable.name === 'butter') {
+      if (mouseInBowl()) {
+        success = true;
+        frame = 1;
+        draggable = null;
+      }
+    } else if (frame === 1 && draggable.name === 'flour') {
+      if (mouseInBowl()) {
+        success = true;
+        frame = 2;
+        draggable = null;
+      }
+    } else if (frame === 2 && draggable.name === 'banjuk') {
+      if (mouseInPieTray()) {
+        success = true;
+        frame = 3;
+        draggable = null;
+      }
+    } else if (frame === 3 && draggable.name === 'apple') {
+      if (mouseInPieTray()) {
+        success = true;
+        frame = 4;
+        draggable = null;
+      }
+    }
+
+    if (!success) {
+      draggable = null; // snap back
+    }
+  }
+}
+function mouseInRect(rect) {
+  return mouseX >= rect.x && mouseX <= rect.x + rect.w &&
+         mouseY >= rect.y && mouseY <= rect.y + rect.h;
+}
+
+function mouseInBowl() {
+  let dx = mouseX - bowlCenter.x;
+  let dy = mouseY - bowlCenter.y;
+  return (dx * dx) / (bowlRadiusX * bowlRadiusX) + (dy * dy) / (bowlRadiusY * bowlRadiusY) <= 1;
+}
+
+function mouseInPieTray() {
+  let dx = mouseX - pieTrayCenter.x;
+  let dy = mouseY - pieTrayCenter.y;
+  return (dx * dx) / (pieTrayRadiusX * pieTrayRadiusX) + (dy * dy) / (pieTrayRadiusY * pieTrayRadiusY) <= 1;
+}
+
+function startDrag(name, img, pos) {
+  draggable = {
+    name: name,
+    img: img,
+    x: pos.x,
+    y: pos.y,
+    w: pos.w,
+    h: pos.h
+  };
+  dragOffsetX = draggable.x - mouseX;
+  dragOffsetY = draggable.y - mouseY;
+}
+
