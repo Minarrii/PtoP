@@ -527,7 +527,8 @@ function draw5() {
   
         break;
   
-      case 1: 
+      case 1: // Oven scene with alternating backgrounds + dialogue9
+        // Alternate background every 30 frames or time-based
         if (frameCount % 60 < 30) {
           image(oven_darkbg, width/2, height/2, width, height);
         } else {
@@ -539,6 +540,7 @@ function draw5() {
   
         break;
   
+      // Add more cases if you have more scenes in stage 4
     }
   }
   
