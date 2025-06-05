@@ -146,36 +146,38 @@ function setup() {
   cameraButton = new Button(darkCamera, retroCamera, width / 2 - 200, height * 2 / 5 + 100, retroCamera.width / 3, retroCamera.height / 3, () => {
     
 
-  if (clickCooltime === 0) {
- 
-  // 0.8초 후 쿨타임 해제
-  setTimeout(() => {
-    clickCooltime = 0;
-  }, 800);
 
-  // 이 안에서 타겟 탐색도 같이!
-  let validTarget = targets.find(t =>
-    t.isInFrame() && t.x > width / 2 - 150 && t.x < width / 2 + 40
-  );
+    if (clickCooltime === 0) {
 
-  if (validTarget) {
-    console.log("일단 인식함");
-     clickCooltime = 1;
-    if (validTarget.imgNum === 0) {
-      score3 += 1;
-      console.log("사과 발견! 점수 +1");
-    } else if (validTarget.imgNum === 1) {
-      score3 -= 2;
-      console.log("새 발견! 점수 -2");
-    } else if (validTarget.imgNum === 2) {
-      score3 += 2;
-      console.log("얼굴발견! 점수 +2");
-    }
-  } else {
-    console.log("해당 영역에 타겟 없음");
-  }
-}
+      // 0.8초 후 쿨타임 해제
+      setTimeout(() => {
+        clickCooltime = 0;
+      }, 800);
 
+      // 이 안에서 타겟 탐색도 같이!
+      let validTarget = targets.find(t =>
+        t.isInFrame() && t.x > width / 2 - 150 && t.x < width / 2 + 40
+      );
+
+      if (validTarget) {
+        console.log("일단 인식함");
+        clickCooltime = 1;
+        if (validTarget.imgNum === 0) {
+          score3 += 1;
+          console.log("사과 발견! 점수 +1");
+        } else if (validTarget.imgNum === 1) {
+          score3 -= 2;
+          console.log("새 발견! 점수 -2");
+        } else if (validTarget.imgNum === 2) {
+          score3 += 2;
+          console.log("얼굴발견! 점수 +2");
+        } else if (validTarget.imgNum === 3) {
+          score3 -= 1;
+          console.log("파이프 발견! 점수 -1");
+        }
+      } else {
+        console.log("해당 영역에 타겟 없음");
+      }}
   });
 
 
@@ -206,7 +208,7 @@ function setup() {
 
   //스테 3 이미지 배열 만들기
   for (let i = 0; i < 40; i++) {
-    targets.push(new PhotoTarget(i, int(random(0, 3))));
+    targets.push(new PhotoTarget(i, int(random(0, 4))));
   }
 
 }
