@@ -9,7 +9,7 @@ let ghostAlpha = 0;
 let shake = false;
 let shakeStartTime = 0;
 let hasPlayedShakeSound = false;
-let playerName = "";
+let playerName = "조민환";
 let inputBox;
 let dialogueBoxImg, nextButtonImg;
 let myFont;
@@ -38,15 +38,8 @@ let st1SuccessPoint = 1;
 let gaugeZone;
 let gaugeDirection = 1;
 //다이얼로그
-let dialogue1;
-let dialogue2;
-let dialogue3;
-let dialogue4;
-let dialogue5;
-let dialogue6;
-let dialogue7;
-let dialogue8;
-let dialogue9;
+let dialogue1, dialogue2, dialogue3, dialogue4, dialogue5, dialogue6, dialogue7, dialogue8, dialogue9, dialogue10;
+
 //2stage
 let cropcrop;
 let stage2sceneNum = 0;
@@ -85,25 +78,34 @@ let frame = 0;
 let draggable = null;
 let dragOffsetX = 0;
 let dragOffsetY = 0;
-let stage4sceneNum = 0; 
+let stage4sceneNum = 0;
 
 // Positions (copy from cooking stage)
-let butterPos = {x: 510, y: 30, w: 160, h: 160};
-let flourPos = {x: 665, y: 25, w: 150, h: 160};
-let applePos = {x: 820, y: 25, w: 140, h: 160};
-let ghostPos = {x:0, y: 0, w: 180, h: 180};
-let chatPos = {x: 170, y: 15, w: 280, h: 140};
+let butterPos = { x: 510, y: 30, w: 160, h: 160 };
+let flourPos = { x: 665, y: 25, w: 150, h: 160 };
+let applePos = { x: 820, y: 25, w: 140, h: 160 };
+let ghostPos = { x: 0, y: 0, w: 180, h: 180 };
+let chatPos = { x: 170, y: 15, w: 280, h: 140 };
 
-let bowlCenter = {x: 260, y: 280};
+let bowlCenter = { x: 260, y: 280 };
 let bowlRadiusX = 180;
 let bowlRadiusY = 100;
 
-let pieTrayCenter = {x: 730, y: 360};
+let pieTrayCenter = { x: 730, y: 360 };
 let pieTrayRadiusX = 205;
 let pieTrayRadiusY = 110;
 
-let banjukPos = {x: 111, y: 185.5, w: 300, h: 191};
+let banjukPos = { x: 111, y: 185.5, w: 300, h: 191 };
 
+//epliogue
+let backToStartClicked, backToStart, painter, last_bg, drawdraw;
+let stage5sceneNum = 0;
+let zoomStart=false;
+let zoom=1
+let zoomX=0;
+let zoomY=0;
+let zoomDelay=0;
+let restartButton;
 
 function preload() {
   preload0();
@@ -111,6 +113,7 @@ function preload() {
   preload2();
   preload3();
   preload4();
+  preload5();
 
 }
 
@@ -130,6 +133,7 @@ function setup() {
   dialogue7 = new Dialogue(dialogue7List);
   dialogue8 = new Dialogue(dialogue8List);
   dialogue9 = new Dialogue(dialogue9List);
+  dialogue10 = new Dialogue(dialogue10List);
 
   startButton = new Button(startBut, startButCl, width / 2 - 140, height * 4 / 5 - 50, 300, 100, () => {
     if (stageNum == 1) stage1sceneNum = 1;
@@ -138,13 +142,11 @@ function setup() {
 
   });
 
-  milkWoman.loop();
-  milkWoman.hide();//DOM에 표시되는 걸 막기 위함
-  cropcrop.loop();
-  cropcrop.hide();
+
+
 
   cameraButton = new Button(darkCamera, retroCamera, width / 2 - 200, height * 2 / 5 + 100, retroCamera.width / 3, retroCamera.height / 3, () => {
-    
+
 
 
     if (clickCooltime === 0) {
@@ -177,7 +179,8 @@ function setup() {
         }
       } else {
         console.log("해당 영역에 타겟 없음");
-      }}
+      }
+    }
   });
 
 
@@ -207,7 +210,7 @@ function setup() {
 
 
   //스테 3 이미지 배열 만들기
-  for (let i = 0; i < 40; i++) {
+  for (let i = 0; i < 80; i++) {
     targets.push(new PhotoTarget(i, int(random(0, 4))));
   }
 
@@ -224,6 +227,8 @@ function draw() {
     draw4();
   } else if (stageNum === 4) {
     draw5();
+  } else if (stageNum === 5) {
+    draw6();
   }
 }
 
@@ -328,13 +333,13 @@ function mouseClicked() {
     const btnY = height - 50;
     const btnW = 80;
     const btnH = 30;
-  
+
     if (mouseX >= btnX - btnW / 2 && mouseX <= btnX + btnW / 2 &&
-        mouseY >= btnY - btnH / 2 && mouseY <= btnY + btnH / 2) {
+      mouseY >= btnY - btnH / 2 && mouseY <= btnY + btnH / 2) {
       stage4sceneNum = 1; // 다음 씬으로 전환
     }
   }
-  
+
   else if (stageNum === 4 && stage4sceneNum === 1) { //3스테 미니게임 끝나고
     const btnX = width - 170;
     const btnY = height - 50;
@@ -345,21 +350,50 @@ function mouseClicked() {
       mouseY >= btnY - btnH / 2 && mouseY <= btnY + btnH / 2) {
       if (!dialogue9.next()) {
         stageNum = 5;
+        stage5sceneNum = 0;
         //needSt1Panel = true; 
       }
     }
   }
-  
+
+  if (stageNum == 5) { //5스테이지
+    const btnX = width - 170;
+    const btnY = height - 50;
+    const btnW = 80;
+    const btnH = 30;
+    if (mouseX >= btnX - btnW / 2 && mouseX <= btnX + btnW / 2 &&
+      mouseY >= btnY - btnH / 2 && mouseY <= btnY + btnH / 2) {
+
+      if (!dialogue10.next()) {
+        stage5sceneNum=1;
+        zoomDelay=millis();
+
+        //needSt1Panel = true; 
+      }
+    }
+
+  } 
+  if(stageNum==5){
+    restartButton.checkClick()//초기화 버튼
+  }
+
   // 추후 게임 인터랙션 등을 여기에 추가 가능
 }
 
 
 function mousePressed() {
+
+  //영상 자동재생 재한 우회
+  milkWoman.loop();
+  cropcrop.loop();
+  drawdraw.loop();
+
+
   if (stageNum === 4) {
     // 요리씬 스테이지 먼저 넣음
     cookingMousePressed();
   } else {
-    
+
     if (slide === 0) { //스타트 버튼 1씬에서
       const btnX = width / 2;
       const btnY = height * 0.85;
@@ -403,7 +437,7 @@ function mouseReleased() {
   if (stageNum === 4) {
     cookingMouseReleased();
   }
- //에셋 그릇에 놓을 때
+  //에셋 그릇에 놓을 때
 }
 
 
@@ -458,7 +492,7 @@ function cookingMouseReleased() {
 }
 function mouseInRect(rect) {
   return mouseX >= rect.x && mouseX <= rect.x + rect.w &&
-         mouseY >= rect.y && mouseY <= rect.y + rect.h;
+    mouseY >= rect.y && mouseY <= rect.y + rect.h;
 }
 
 function mouseInBowl() {

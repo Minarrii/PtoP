@@ -339,6 +339,7 @@ function draw4() {
     textAlign(LEFT, BASELINE);
     switch (stage3sceneNum) {
         case 0:
+            frameRate(24);//속도변경
             image(titleBack, 0, 0);
             startButton.display();
 
@@ -459,92 +460,217 @@ function draw4() {
 }
 
 function draw5() {
-    switch(stage4sceneNum) {
-      case 0: 
-        background(220);
-        imageMode(CORNER);
+    switch (stage4sceneNum) {
+        case 0:
+            background(220);
+            imageMode(CORNER);
 
-        if (frame === 0) {
-            image(cooking_bg, 0, 0, width, height);
-        }else if (frame === 1) {
-          image(butter_bg, 0, 0, width, height);
-        } else if (frame === 2) {
-          image(cooking_bg, 0, 0, width, height);
-        } else if (frame === 3) {
-          image(pie_bg, 0, 0, width, height);
-        } else if (frame === 4) {
-          image(applepie_bg, 0, 0, width, height);
-  
-          //버튼 생기기
-          if (stage4sceneNum === 0 && frame === 4) {
-            const btnX = width - 170;
-            const btnY = height - 50;
-            const btnW = 80;
-            const btnH = 30;
-            image(nextButtonImg, btnX, btnY, btnW, btnH);
-          }
-                 
-         
-        }
-      
-        image(cookingghostImg, ghostPos.x, ghostPos.y, ghostPos.w, ghostPos.h);
-        image(chatImg, chatPos.x, chatPos.y, chatPos.w, chatPos.h);
-  
-        fill(0);
-        noStroke();
-        textSize(18);
-        textAlign(CENTER);
-        text(dialogue8List[frame].text, chatPos.x + 20, chatPos.y + 25, chatPos.w - 40, chatPos.h - 40);
-  
-        // 요리 재료
-        if (frame === 0) {
-          if (!draggable || draggable.name !== 'butter') image(butterImg, butterPos.x, butterPos.y, butterPos.w, butterPos.h);
-          image(flourImg, flourPos.x, flourPos.y, flourPos.w, flourPos.h);
-          image(appleImg, applePos.x, applePos.y, applePos.w, applePos.h);
-        } else if (frame === 1) {
-          if (!draggable || draggable.name !== 'flour') image(flourImg, flourPos.x, flourPos.y, flourPos.w, flourPos.h);
-          image(appleImg, applePos.x, applePos.y, applePos.w, applePos.h);
-        } else if (frame === 2) {
-          image(appleImg, applePos.x, applePos.y, applePos.w, applePos.h);
-          if (!draggable || draggable.name !== 'banjuk') image(banjukImg, banjukPos.x, banjukPos.y, banjukPos.w, banjukPos.h);
-        } else if (frame === 3) {
-          if (!draggable || draggable.name !== 'apple') image(appleImg, applePos.x, applePos.y, applePos.w, applePos.h);
-        }
-  
-        if (draggable) {
-          draggable.x = mouseX + dragOffsetX;
-          draggable.y = mouseY + dragOffsetY;
-          image(draggable.img, draggable.x, draggable.y, draggable.w, draggable.h);
-        }
-  
-        noFill();
-        noStroke();
-        ellipse(bowlCenter.x, bowlCenter.y, bowlRadiusX * 2, bowlRadiusY * 2);
-        ellipse(pieTrayCenter.x, pieTrayCenter.y, pieTrayRadiusX * 2, pieTrayRadiusY * 2);
-  
-        image(handImg, mouseX - 20, mouseY - 10, 40, 40);
-  
-        break;
-  
-      case 1: // Oven scene with alternating backgrounds + dialogue9
-        // Alternate background every 30 frames or time-based
-        if (frameCount % 60 < 30) {
-          image(oven_darkbg, width/2, height/2, width, height);
-        } else {
-          image(oven_lightbg, width/2, height/2, width, height);
-        }
-  
-        dialogue9.start();
-        dialogue9.display(playerName, dialogueBoxImg, nextButtonImg);
-  
-        break;
-  
-      // Add more cases if you have more scenes in stage 4
+            if (frame === 0) {
+                image(cooking_bg, 0, 0, width, height);
+            } else if (frame === 1) {
+                image(butter_bg, 0, 0, width, height);
+            } else if (frame === 2) {
+                image(cooking_bg, 0, 0, width, height);
+            } else if (frame === 3) {
+                image(pie_bg, 0, 0, width, height);
+            } else if (frame === 4) {
+                image(applepie_bg, 0, 0, width, height);
+
+                //버튼 생기기
+                if (stage4sceneNum === 0 && frame === 4) {
+                    const btnX = width - 170;
+                    const btnY = height - 50;
+                    const btnW = 80;
+                    const btnH = 30;
+                    image(nextButtonImg, btnX, btnY, btnW, btnH);
+                }
+
+
+            }
+
+            image(cookingghostImg, ghostPos.x, ghostPos.y, ghostPos.w, ghostPos.h);
+            image(chatImg, chatPos.x, chatPos.y, chatPos.w, chatPos.h);
+
+            fill(0);
+            noStroke();
+            textSize(18);
+            textAlign(CENTER);
+            text(dialogue8List[frame].text, chatPos.x + 20, chatPos.y + 25, chatPos.w - 40, chatPos.h - 40);
+
+            // 요리 재료
+            if (frame === 0) {
+                if (!draggable || draggable.name !== 'butter') image(butterImg, butterPos.x, butterPos.y, butterPos.w, butterPos.h);
+                image(flourImg, flourPos.x, flourPos.y, flourPos.w, flourPos.h);
+                image(appleImg, applePos.x, applePos.y, applePos.w, applePos.h);
+            } else if (frame === 1) {
+                if (!draggable || draggable.name !== 'flour') image(flourImg, flourPos.x, flourPos.y, flourPos.w, flourPos.h);
+                image(appleImg, applePos.x, applePos.y, applePos.w, applePos.h);
+            } else if (frame === 2) {
+                image(appleImg, applePos.x, applePos.y, applePos.w, applePos.h);
+                if (!draggable || draggable.name !== 'banjuk') image(banjukImg, banjukPos.x, banjukPos.y, banjukPos.w, banjukPos.h);
+            } else if (frame === 3) {
+                if (!draggable || draggable.name !== 'apple') image(appleImg, applePos.x, applePos.y, applePos.w, applePos.h);
+            }
+
+            if (draggable) {
+                draggable.x = mouseX + dragOffsetX;
+                draggable.y = mouseY + dragOffsetY;
+                image(draggable.img, draggable.x, draggable.y, draggable.w, draggable.h);
+            }
+
+            noFill();
+            noStroke();
+            ellipse(bowlCenter.x, bowlCenter.y, bowlRadiusX * 2, bowlRadiusY * 2);
+            ellipse(pieTrayCenter.x, pieTrayCenter.y, pieTrayRadiusX * 2, pieTrayRadiusY * 2);
+
+            image(handImg, mouseX - 20, mouseY - 10, 40, 40);
+
+            break;
+
+        case 1: // Oven scene with alternating backgrounds + dialogue9
+            // Alternate background every 30 frames or time-based
+            if (frameCount % 60 < 30) {
+                image(oven_darkbg, width / 2, height / 2, width, height);
+            } else {
+                image(oven_lightbg, width / 2, height / 2, width, height);
+            }
+
+            dialogue9.start();
+            dialogue9.display(playerName, dialogueBoxImg, nextButtonImg);
+
+            break;
+
+        // Add more cases if you have more scenes in stage 4
     }
-  }
-  
+}
 
-  
+function draw6() {
+
+    switch (stage5sceneNum) {
+        case 0:
+            background(255);
+            textAlign(LEFT, TOP)
+            if (dialogue10.index == 0) { //그림그리는 영상 부분
+                imageMode(CORNER);
+                image(drawdraw, 0, 0, width, height);
+            }
+            else if (dialogue10.index == 1) {
+                imageMode(CORNER);
+                image(museumImg, 0, 0, width, height);
+                imageMode(CENTER);
+                image(ghostImg, width / 2, height / 2, ghostImg.width * 0.3, ghostImg.height * 0.3);
+
+            } else if (dialogue10.index == 2) { //화가로 성불하는 부분
+                imageMode(CORNER);
+                image(museumImg, 0, 0, width, height);
+                imageMode(CENTER);
+                image(painter, width / 2, height / 2, ghostImg.width * 0.3, ghostImg.height * 0.3);
+            }
+            else {//우령이 사라지고 난 후
+                imageMode(CORNER);
+                fill("red")
+                textSize(16);
+                image(last_bg, 0, 0, width, height);
+                textAlign(CENTER)
+                text("<애플파이>", 710, 340)
+                text("행복한 화가" + ", " + playerName, 710, 360)
+
+
+
+            }
+
+            dialogue10.start();  // 한 번만 실행
+            dialogue10.display(playerName, dialogueBoxImg, nextButtonImg);
+
+            break;
+        case 1:  //줌 인: 일단 대화 박스만 지우고 다시 그린다
+            fill("red")
+            textSize(16);
+            frameRate(30);
+            background(255)
+            imageMode(CORNER);
+            image(last_bg, 0, 0, width, height);
+            textAlign(CENTER)
+            text("<애플파이>", 710, 347)
+            text("행복한 화가" + ", " + playerName, 710, 367)
+
+
+            if (millis() - zoomDelay >= 1000) { // 버튼 누르고 1초가 지나면 줌 인 시작
+                if (zoom < 1.8) zoom += 0.01
+                if (zoomX < 420) zoomX += 6
+                if (zoomY < 100) zoomY += 3
+
+
+                push();
+                scale(zoom);                        // 확대
+                translate(-zoomX, -zoomY);      // 원하는 지점을 중심으로 맞춤
+                imageMode(CORNER);
+                image(last_bg, 0, 0, width, height);
+                textAlign(CENTER)
+                text("<애플파이>", 710, 347)
+                text("행복한 화가" + ", " + playerName, 710, 367)
+                pop();
+            }
+
+            if (millis() - zoomDelay >= 5000) {//초기화 버튼
+                console.log("버튼 생성됨!")
+                restartButton = new Button(backToStart, backToStartClicked, width / 2 + 240, height / 2 + 160, 270, 90, () => {
+                    /*stageNum = 0;
+                    createCanvas(1024, 576);
+                    textFont(myFont);
+                    imageMode(CENTER);
+                    textAlign(LEFT, TOP);
+                    frameRate(18);
+                    //prologue
+                    slide = 0;
+                    ghostAlpha = 0;
+                    shake = false;
+                    shakeStartTime = 0;
+                    hasPlayedShakeSound = false;
+                    //1스테
+                    score = 0;
+                    prevAngle = 0;
+                    angularVelocity = 0;
+                    gaugeValue = 0;
+                    accumTime = 0;
+                    gaugeZoneY = 0;
+                    gaugeZoneH = 0;
+                    stage1sceneNum = 0;
+                    needSt1Panel = true;
+                    st1Timer = 0;
+                    remainingTime = 60;
+                    gaugeDirection = 1;
+                    //2stage
+                    stage2sceneNum = 0;
+                    currentTurn = 0;
+                    score2 = 0;
+                    remainingTime2 = 60;
+                    lastTimeChecked2 = 0;
+                    //3stage
+                    stage3sceneNum = 0;
+                    score3 = 0;
+                    st3Timer = 0;
+                    remainingTime3 = 60;
+                    clickCooltime = 0;
+                    //epilogue
+                    zoom = 1;
+                    zoomX = 0;
+                    zoomY = 0;
+                    stage5sceneNum = 0;
+                    zoomDelay = 0;*/
+                    window.location.reload();
+                });
+
+                restartButton.display();
+
+            }
+
+
+    }
+}
+
+
+
 function drawSt1Panel(text1, text2, text3) {
     if (needSt1Panel) {
         fill(210, 214, 211, 200);

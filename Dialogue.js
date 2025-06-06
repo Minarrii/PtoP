@@ -27,7 +27,7 @@ class Dialogue {
   next() {
     if (this.index < this.dialogues.length - 1) {
       this.index++;
-      if (this.index === 4) {
+      if (this.index === 4&&stageNum==0) {
         this.shake = true;
         this.shakeStartTime = millis();
         if (!this.hasPlayedShakeSound) {

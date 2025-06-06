@@ -2,7 +2,7 @@ class PhotoTarget {
   constructor(order,imgNum) {
     this.x= -100-order*width/4;
     this.y = 130;
-    this.speed = width/6;
+    this.speed = width/4;
     this.img = targetImages[imgNum];
     this.order=order;
     this.imgNum = imgNum;
