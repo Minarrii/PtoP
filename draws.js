@@ -172,7 +172,7 @@ function draw2() {
             text("STAGE 1", 30, 50);
 
             //시간이 30초가 되면!
-            if (remainingTime <= 30 && remainingTime >= 25) {
+            if (remainingTime <= 20 && remainingTime >= 15) {
 
                 fill(255)
                 rect(200, 400, 300, 80, 20)
@@ -181,7 +181,7 @@ function draw2() {
                 textSize(18)
                 text("우유가 굳고 있어. 더 빨리 저어야 해!", 205, 450)
                 image(hurryUp, width / 7 - 150, height * 3 / 4, 200, 150)
-                targetSpeed = 0.5
+                targetSpeed = 0.45
             }
 
             //hard mode:판때기 움직이기
@@ -339,7 +339,7 @@ function draw4() {
     textAlign(LEFT, BASELINE);
     switch (stage3sceneNum) {
         case 0:
-            frameRate(24);//속도변경
+            frameRate(60);//속도변경
             image(titleBack, 0, 0);
             startButton.display();
 
@@ -368,12 +368,12 @@ function draw4() {
 
             //점수판 구현
             image(scoreBoard, 500, 0, 500, 80);
-            textSize(24);
+            textSize(22);
             textAlign(LEFT);
-            text("찍은 사진:" + score3 + " 장", 720, 50);
+            text("찍은 사진:" + score3 + '/' + st3SuccessPoint+" 장", 710, 50);
 
             //플래시 이펙트
-            if (clickCooltime <= 1 && clickCooltime >= 0.5) image(flash, cameraButton.x + 150, cameraButton.y + 20, 150, 150)
+            if (clickCooltime!=0) image(flash, cameraButton.x + 150, cameraButton.y + 20, 150, 150)
             //시작 전, 성공, 실패 상태에 따라 패널의 내용을 변경
             if (score3 == 0 && remainingTime3 != 0) drawSt1Panel("카메라를 클릭해 사진을 찍자.", "남자의 얼굴이 완전히 가려졌을 때 찍어야 한다.", "START");
             else if (score3 >= st3SuccessPoint && remainingTime3 >= 0) drawSt1Panel("사진을 아주 잘 찍었다!", "남자에게 보여 주자.", "NEXT");
@@ -415,6 +415,8 @@ function draw4() {
                 line(width / 2 + 40, 0, width / 2 + 40, 300)
                 for (let t of targets) {
                     t.move();     // 위치 업데이트
+                    t.speed+=0.5;
+                    movingSpeed=t.speed;
                     t.display();  // 화면에 그리기
                 }
 
@@ -550,21 +552,27 @@ function draw6() {
         case 0:
             background(255);
             textAlign(LEFT, TOP)
-            if (dialogue10.index == 0) { //그림그리는 영상 부분
+
+            if (dialogue10.index >= 0 && dialogue10.index <= 8) { //그림그리는 영상 부분
                 imageMode(CORNER);
                 image(drawdraw, 0, 0, width, height);
+                if (dialogue10.index >= 3) {
+                    kid_painting.play();
+                    image(kid_painting, 0, 0, width, height)
+    
+                }
             }
-            else if (dialogue10.index == 1) {
+            else if (dialogue10.index > 8 && dialogue10.index <= 19) {
                 imageMode(CORNER);
                 image(museumImg, 0, 0, width, height);
                 imageMode(CENTER);
                 image(ghostImg, width / 2, height / 2, ghostImg.width * 0.3, ghostImg.height * 0.3);
 
-            } else if (dialogue10.index == 2) { //화가로 성불하는 부분
+            } else if (dialogue10.index >= 20) { //화가로 성불하는 부분
                 imageMode(CORNER);
                 image(museumImg, 0, 0, width, height);
                 imageMode(CENTER);
-                image(painter, width / 2, height / 2, ghostImg.width * 0.3, ghostImg.height * 0.3);
+                image(ghost_painter, width / 2, height / 2, ghostImg.width * 0.3, ghostImg.height * 0.3);
             }
             else {//우령이 사라지고 난 후
                 imageMode(CORNER);
@@ -575,15 +583,30 @@ function draw6() {
                 text("<애플파이>", 710, 340)
                 text("행복한 화가" + ", " + playerName, 710, 360)
 
-
-
             }
 
-            dialogue10.start();  // 한 번만 실행
+
+            dialogue10.start();
             dialogue10.display(playerName, dialogueBoxImg, nextButtonImg);
 
             break;
-        case 1:  //줌 인: 일단 대화 박스만 지우고 다시 그린다
+        case 1:
+            imageMode(CORNER);
+            fill("red")
+            textSize(16);
+            image(last_bg, 0, 0, width, height);
+            textAlign(CENTER)
+            text("<애플파이>", 710, 340)
+            text("행복한 화가" + ", " + playerName, 710, 360)
+
+            dialogue12.start();
+            dialogue12.display(playerName, dialogueBoxImg, nextButtonImg);
+
+
+            break;
+
+
+        case 2: //줌 인: 일단 대화 박스만 지우고 다시 그린다
             fill("red")
             textSize(16);
             frameRate(30);
@@ -611,59 +634,19 @@ function draw6() {
                 text("행복한 화가" + ", " + playerName, 710, 367)
                 pop();
             }
-
             if (millis() - zoomDelay >= 5000) {//초기화 버튼
-                console.log("버튼 생성됨!")
                 restartButton = new Button(backToStart, backToStartClicked, width / 2 + 240, height / 2 + 160, 270, 90, () => {
-                    /*stageNum = 0;
-                    createCanvas(1024, 576);
-                    textFont(myFont);
-                    imageMode(CENTER);
-                    textAlign(LEFT, TOP);
-                    frameRate(18);
-                    //prologue
-                    slide = 0;
-                    ghostAlpha = 0;
-                    shake = false;
-                    shakeStartTime = 0;
-                    hasPlayedShakeSound = false;
-                    //1스테
-                    score = 0;
-                    prevAngle = 0;
-                    angularVelocity = 0;
-                    gaugeValue = 0;
-                    accumTime = 0;
-                    gaugeZoneY = 0;
-                    gaugeZoneH = 0;
-                    stage1sceneNum = 0;
-                    needSt1Panel = true;
-                    st1Timer = 0;
-                    remainingTime = 60;
-                    gaugeDirection = 1;
-                    //2stage
-                    stage2sceneNum = 0;
-                    currentTurn = 0;
-                    score2 = 0;
-                    remainingTime2 = 60;
-                    lastTimeChecked2 = 0;
-                    //3stage
-                    stage3sceneNum = 0;
-                    score3 = 0;
-                    st3Timer = 0;
-                    remainingTime3 = 60;
-                    clickCooltime = 0;
-                    //epilogue
-                    zoom = 1;
-                    zoomX = 0;
-                    zoomY = 0;
-                    stage5sceneNum = 0;
-                    zoomDelay = 0;*/
                     window.location.reload();
                 });
-
+                imageMode(CENTER)
+                fill(255, 80)
+                rect(0, 0, 4000, 4000)
+                image(theEndGst, width / 2, height / 2, theEndGst.width / 3, theEndGst.height / 3)
+                imageMode(CORNER)
                 restartButton.display();
-
             }
+
+            break;
 
 
     }

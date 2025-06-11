@@ -9,7 +9,7 @@ let ghostAlpha = 0;
 let shake = false;
 let shakeStartTime = 0;
 let hasPlayedShakeSound = false;
-let playerName = "조민환";
+let playerName = "조민환(개발자)";
 let inputBox;
 let dialogueBoxImg, nextButtonImg;
 let myFont;
@@ -34,11 +34,11 @@ let needSt1Panel = true;
 let st1Timer = 0;
 let lastTimeChecked; //1스테 타이머 변수
 let remainingTime = 60;
-let st1SuccessPoint = 1;
+let st1SuccessPoint = 7;//성공 목표 점수!
 let gaugeZone;
 let gaugeDirection = 1;
 //다이얼로그
-let dialogue1, dialogue2, dialogue3, dialogue4, dialogue5, dialogue6, dialogue7, dialogue8, dialogue9, dialogue10;
+let dialogue1, dialogue2, dialogue3, dialogue4, dialogue5, dialogue6, dialogue7, dialogue8, dialogue9, dialogue10, dialogue12;
 
 //2stage
 let cropcrop;
@@ -51,7 +51,7 @@ let score2 = 0;
 let remainingTime2 = 60;
 let clickedThisFrame = false;
 let lastTimeChecked2 = 0;
-let st2SuccessPoint = 5;
+let st2SuccessPoint = 30; //목표 점수
 //
 let normalCropImg, goldCropImg, darkCropImg;
 let equipmentImg, scoreBoard, noWomanbg, womanbg;
@@ -60,16 +60,17 @@ let equipmentImg, scoreBoard, noWomanbg, womanbg;
 
 //3스테이지
 let stage3sceneNum = 0;
-let man_bg, man_face_bg, bird, pipe, greenApple, retroCamera, darkCamera, flash;
+let man_bg, man_face_bg, bird, pipe, greenApple, retroCamera, darkCamera, flash,camSound;
 let score3 = 0;
 let lastTimeChecked3;//3스테 타이머 변수
 let st3Timer = 0;
 let remainingTime3 = 60;
-let st3SuccessPoint = 2;
+let st3SuccessPoint = 60; //목표 점수
 let cameraButton;
 let targetImages = [];
 let targets = [];
 let clickCooltime = 0;
+let movingSpeed = 1;
 
 
 //cookingstage
@@ -98,14 +99,16 @@ let pieTrayRadiusY = 110;
 let banjukPos = { x: 111, y: 185.5, w: 300, h: 191 };
 
 //epliogue
-let backToStartClicked, backToStart, painter, last_bg, drawdraw;
+let backToStartClicked, backToStart, painter, last_bg, drawdraw, whiteLast, ghost_painter, theEndGst;
 let stage5sceneNum = 0;
-let zoomStart=false;
-let zoom=1
-let zoomX=0;
-let zoomY=0;
-let zoomDelay=0;
+let zoomStart = false;
+let zoom = 1
+let zoomX = 0;
+let zoomY = 0;
+let zoomDelay = 0;
 let restartButton;
+let playing = false;
+let playingtime;
 
 function preload() {
   preload0();
@@ -134,6 +137,7 @@ function setup() {
   dialogue8 = new Dialogue(dialogue8List);
   dialogue9 = new Dialogue(dialogue9List);
   dialogue10 = new Dialogue(dialogue10List);
+  dialogue12 = new Dialogue(dialogue12List);
 
   startButton = new Button(startBut, startButCl, width / 2 - 140, height * 4 / 5 - 50, 300, 100, () => {
     if (stageNum == 1) stage1sceneNum = 1;
@@ -142,28 +146,33 @@ function setup() {
 
   });
 
-
+  //스테 3 이미지 배열 만들기
+  for (let i = 0; i < 160; i++) {
+    targets.push(new PhotoTarget(i, int(random(0, 4))));
+  }
 
 
   cameraButton = new Button(darkCamera, retroCamera, width / 2 - 200, height * 2 / 5 + 100, retroCamera.width / 3, retroCamera.height / 3, () => {
 
 
-
     if (clickCooltime === 0) {
 
-      // 0.8초 후 쿨타임 해제
-      setTimeout(() => {
-        clickCooltime = 0;
-      }, 800);
-
+  
       // 이 안에서 타겟 탐색도 같이!
-      let validTarget = targets.find(t =>
-        t.isInFrame() && t.x > width / 2 - 150 && t.x < width / 2 + 40
-      );
+      let validTarget = targets.find(t =>  t.isInFrame() && !t.isClicked  );
 
       if (validTarget) {
+        camSound.play();
         console.log("일단 인식함");
         clickCooltime = 1;
+        validTarget.isClicked = true; // ← 클릭 처리
+
+        let clickCooltimeDuration = (width / 8) / validTarget.speed;
+
+        setTimeout(() => {
+          clickCooltime = 0;
+        }, clickCooltimeDuration * 1000); // ms 단위로 변환
+
         if (validTarget.imgNum === 0) {
           score3 += 1;
           console.log("사과 발견! 점수 +1");
@@ -209,10 +218,6 @@ function setup() {
   nextTurnTime = millis() + 1000;
 
 
-  //스테 3 이미지 배열 만들기
-  for (let i = 0; i < 80; i++) {
-    targets.push(new PhotoTarget(i, int(random(0, 4))));
-  }
 
 }
 
@@ -356,7 +361,7 @@ function mouseClicked() {
     }
   }
 
-  if (stageNum == 5) { //5스테이지
+  if (stageNum == 5 && stage5sceneNum == 0) { //5스테이지
     const btnX = width - 170;
     const btnY = height - 50;
     const btnW = 80;
@@ -365,15 +370,28 @@ function mouseClicked() {
       mouseY >= btnY - btnH / 2 && mouseY <= btnY + btnH / 2) {
 
       if (!dialogue10.next()) {
-        stage5sceneNum=1;
-        zoomDelay=millis();
-
-        //needSt1Panel = true; 
+        stage5sceneNum = 1;
       }
     }
+  }
+  if (stageNum == 5 && stage5sceneNum == 1) { //5스테이지 1
+    const btnX = width - 170;
+    const btnY = height - 50;
+    const btnW = 80;
+    const btnH = 30;
+    if (mouseX >= btnX - btnW / 2 && mouseX <= btnX + btnW / 2 &&
+      mouseY >= btnY - btnH / 2 && mouseY <= btnY + btnH / 2) {
 
-  } 
-  if(stageNum==5){
+
+      if (!dialogue12.next()) {
+        stage5sceneNum = 2;
+        zoomDelay = millis();
+        //needSt1Panel = true; 
+      }
+
+    }
+  }
+  if (stageNum == 5 && stage5sceneNum == 2) {
     restartButton.checkClick()//초기화 버튼
   }
 

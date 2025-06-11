@@ -62,6 +62,7 @@ function preload3() {
     targetImages[2] = face;
     targetImages[3] = pipe;
     flash = loadImage('assets/stage3/flash.png');
+    camSound=loadSound('assets/stage3/cam.mp3');
 }
 
 function preload4() {
@@ -88,10 +89,16 @@ function preload5() {
     backToStart = loadImage('assets/last/back to start.png');
     painter = loadImage('assets/last/painter.png');
     last_bg = loadImage('assets/last/last_bg_typo.PNG');
-    drawdraw = createVideo(['assets/last/drawdraw.mp4'])
+    drawdraw = createVideo(['assets/last/drawdraw.mp4']);
+    kid_painting= createVideo(['assets/last/kid_painting.mp4']);
+    ghost_painter=loadImage('assets/last/ghost_painter.png');
+    whiteLast=loadImage('assets/last/white_last.png');
+    theEndGst=loadImage('assets/last/theendgst.png');
 
     milkWoman.hide();//DOM에 표시되는 걸 막기 위함 
     drawdraw.hide();
     cropcrop.hide();
+    kid_painting.hide();
+    
 
 }
