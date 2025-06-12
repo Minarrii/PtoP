@@ -415,7 +415,7 @@ function draw4() {
                 line(width / 2 + 40, 0, width / 2 + 40, 300)
                 for (let t of targets) {
                     t.move();     // 위치 업데이트
-                    t.speed+=0.5;
+                    t.speed+=0.3;
                     movingSpeed=t.speed;
                     t.display();  // 화면에 그리기
                 }

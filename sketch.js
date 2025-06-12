@@ -65,7 +65,7 @@ let score3 = 0;
 let lastTimeChecked3;//3스테 타이머 변수
 let st3Timer = 0;
 let remainingTime3 = 60;
-let st3SuccessPoint = 60; //목표 점수
+let st3SuccessPoint = 50; //목표 점수
 let cameraButton;
 let targetImages = [];
 let targets = [];
