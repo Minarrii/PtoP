@@ -34,7 +34,7 @@ let needSt1Panel = true;
 let st1Timer = 0;
 let lastTimeChecked; //1스테 타이머 변수
 let remainingTime = 60;
-let st1SuccessPoint = 7;//성공 목표 점수!
+let st1SuccessPoint = 5;//성공 목표 점수!
 let gaugeZone;
 let gaugeDirection = 1;
 //다이얼로그
