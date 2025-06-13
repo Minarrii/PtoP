@@ -391,6 +391,7 @@ function draw4() {
                     remainingTime3 = 60;
                     for (let t of targets) {
                         t.relocate();// 화면에 그리기
+                        t.speed=width/6;
                     }
                 }
             }
