@@ -1,5 +1,5 @@
 
-let stageNum = 1; //스테이지 관리  나중에 바꾸셈
+let stageNum = 0; //스테이지 관리  나중에 바꾸셈
 let slide = 0;
 //대화 시스템 관련
 let ghostImg, shakeSound;
@@ -60,7 +60,7 @@ let equipmentImg, scoreBoard, noWomanbg, womanbg;
 
 //3스테이지
 let stage3sceneNum = 0;
-let man_bg, man_face_bg, bird, pipe, greenApple, retroCamera, darkCamera, flash,camSound;
+let man_bg, man_face_bg, bird, pipe, greenApple, retroCamera, darkCamera, flash, camSound;
 let score3 = 0;
 let lastTimeChecked3;//3스테 타이머 변수
 let st3Timer = 0;
@@ -71,7 +71,11 @@ let targetImages = [];
 let targets = [];
 let clickCooltime = 0;
 let movingSpeed = 1;
-
+let nextClickableTime = 0;
+let clickCooltimeDuration;
+let isFlashOn = false;
+let flashEndTime = 0;
+let get1,get2,lose1,lose2;
 
 //cookingstage
 // cooking stage globals
@@ -99,7 +103,7 @@ let pieTrayRadiusY = 110;
 let banjukPos = { x: 111, y: 185.5, w: 300, h: 191 };
 
 //epliogue
-let backToStartClicked, backToStart, painter, last_bg, drawdraw, whiteLast, ghost_painter, theEndGst;
+let backToStartClicked, backToStart, painter, last_bg, drawdraw, whiteLast, ghost_painter, theEndGst,st3board;
 let stage5sceneNum = 0;
 let zoomStart = false;
 let zoom = 1
@@ -155,19 +159,23 @@ function setup() {
   cameraButton = new Button(darkCamera, retroCamera, width / 2 - 200, height * 2 / 5 + 100, retroCamera.width / 3, retroCamera.height / 3, () => {
 
 
-    if (clickCooltime === 0) {
+    if (millis() >= nextClickableTime) {
 
-  
       // 이 안에서 타겟 탐색도 같이!
-      let validTarget = targets.find(t =>  t.isInFrame() && !t.isClicked  );
+      let validTarget = targets.find(t => t.isInFrame() && !t.isClicked);
 
       if (validTarget) {
         camSound.play();
         console.log("일단 인식함");
-        clickCooltime = 1;
+        //clickCooltime = 1;
         validTarget.isClicked = true; // ← 클릭 처리
 
-        let clickCooltimeDuration = (width / 8) / validTarget.speed;
+        // 📸 플래시 이펙트 시작
+        isFlashOn = true;
+        flashEndTime = millis() + 300; // 300ms 후 꺼짐
+
+        clickCooltimeDuration = (width / 8) / validTarget.speed;
+        nextClickableTime = millis() + clickCooltimeDuration * 1000;
 
         setTimeout(() => {
           clickCooltime = 0;
@@ -176,15 +184,19 @@ function setup() {
         if (validTarget.imgNum === 0) {
           score3 += 1;
           console.log("사과 발견! 점수 +1");
+          get1=true;
         } else if (validTarget.imgNum === 1) {
           score3 -= 2;
           console.log("새 발견! 점수 -2");
+          lose2=true;
         } else if (validTarget.imgNum === 2) {
           score3 += 2;
           console.log("얼굴발견! 점수 +2");
+          get2=true;
         } else if (validTarget.imgNum === 3) {
           score3 -= 1;
           console.log("파이프 발견! 점수 -1");
+          lose1=true;
         }
       } else {
         console.log("해당 영역에 타겟 없음");

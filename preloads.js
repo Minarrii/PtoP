@@ -63,6 +63,7 @@ function preload3() {
     targetImages[3] = pipe;
     flash = loadImage('assets/stage3/flash.png');
     camSound=loadSound('assets/stage3/cam.mp3');
+    st3board=loadImage('assets/stage3/board.png');
 }
 
 function preload4() {

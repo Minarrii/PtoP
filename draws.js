@@ -53,7 +53,7 @@ function draw2() {
             // 스테이지 1에 대사 등장
             break;// 대사 사라지고
         case 2:
-           
+
             //배경 사물
             image(doma, 0, 0, width, height); //배경 도마
             image(bawl, 130, -140, 600, 900);//그릇
@@ -144,7 +144,7 @@ function draw2() {
                 if (angularVelocity >= targetSpeed) {
                     gaugeValue += 1;  // 천천히 증가
                 } else if (angularVelocity < targetSpeed && gaugeValue > 2) {
-                    gaugeValue -= 2.0;  // 빠르게 감소
+                    gaugeValue -= 1.5;  // 빠르게 감소
                 } else gaugeValue = 0;
             }
 
@@ -157,7 +157,9 @@ function draw2() {
             fill("white")
             text("stay", gaugeZone.x - 70, gaugeZone.y + gaugeZone.h / 2)
             text("here!", gaugeZone.x - 70, gaugeZone.y + gaugeZone.h / 2 + 20)
-            triangle(gaugeZone.x+5, gaugeZone.y + gaugeZone.h / 2 - 15, gaugeZone.x + 5, gaugeZone.y + gaugeZone.h / 2 + 15, gaugeZone.x+25, gaugeZone.y + gaugeZone.h / 2)
+            triangle(gaugeZone.x + 5, gaugeZone.y + gaugeZone.h / 2 - 15, gaugeZone.x + 5, gaugeZone.y + gaugeZone.h / 2 + 15, gaugeZone.x + 25, gaugeZone.y + gaugeZone.h / 2)
+            if (gaugeHeight > 490) gaugeValue--; //게이지 안 넘치게
+
 
             fill(245, 165, 44);//게이지 바 그리기
             noStroke();
@@ -371,15 +373,37 @@ function draw4() {
             cameraButton.display(); //카메라 호버링
 
             //점수판 구현
+             if (score3 < 0) score3 = 0;  //음수 안 되게
             image(scoreBoard, 500, 0, 500, 80);
             textSize(22);
             textAlign(LEFT);
             text("찍은 사진:" + score3 + '/' + st3SuccessPoint + " 장", 710, 50);
+           
 
             //플래시 이펙트
-            if (clickCooltime != 0) image(flash, cameraButton.x + 150, cameraButton.y + 20, 150, 150)
+            if (isFlashOn) {
+                image(flash, cameraButton.x + 150, cameraButton.y + 20, 150, 150) //플래시 이미지
+                textSize(40)
+                if (get1 == true) {
+                    fill("white")
+                    text("+1장", width / 2 + 100, height * 2 / 5 + 200)
+                } else if (get2 == true) {
+                    fill("white")
+                    text("+2장", width / 2 + 100, height * 2 / 5 + 200)
+                } else if (lose1 == true) {
+                    fill("red")
+                    text("-1장!", width / 2 - 250, height * 2 / 5 + 200)
+                } else if (lose2 == true) {
+                    fill("red")
+                    text("-2장!", width / 2 - 250, height * 2 / 5 + 200)
+                }
+                if (millis() > flashEndTime) {
+                    isFlashOn = false;  //이미지 끄기
+                    get1 = get2 = lose1 = lose2 = false;
+                }
+            }
             //시작 전, 성공, 실패 상태에 따라 패널의 내용을 변경
-            if (score3 == 0 && remainingTime3 != 0) drawSt1Panel("카메라를 클릭해 사진을 찍자.", "남자의 얼굴이 완전히 가려졌을 때 찍어야 한다.", "START");
+            if (score3 == 0 && remainingTime3 != 0) drawSt1Panel("카메라를 클릭해 사진을 찍자.", "사과와 달이 남자의 얼굴을 완전히 가렸을 때 ", "START", "찍어야 한다.");
             else if (score3 >= st3SuccessPoint && remainingTime3 >= 0) drawSt1Panel("사진을 아주 잘 찍었다!", "남자에게 보여 주자.", "NEXT");
             else if (remainingTime3 === 0) drawSt1Panel("사진을 잘 찍지 못했다.", "다시 시도해 보자.", "RESTART");
 
@@ -396,6 +420,7 @@ function draw4() {
                     for (let t of targets) {
                         t.relocate();// 화면에 그리기
                         t.speed = width / 6;
+                        t.isClicked = false
                     }
                 }
             }
@@ -413,6 +438,8 @@ function draw4() {
                 let min = floor(remainingTime3 / 60);
                 let sec = remainingTime3 % 60;
                 let timeStr = nf(min, 2) + ":" + nf(sec, 2);
+                textSize(22)
+                fill("white")
                 text(timeStr, width - 105, 40); // 오른쪽 위에 출력
 
                 //사물들
@@ -425,7 +452,7 @@ function draw4() {
                     t.display();  // 화면에 그리기
                 }
 
-                textSize(18)
+                /*textSize(18)
                 image(greenApple, 0, 10, 40, 40);
                 text(": +1", 40, 40);
                 image(face, 85, 18, 30, 30);
@@ -433,7 +460,8 @@ function draw4() {
                 image(bird, 163, 15, 30, 30);
                 text(": -2", 200, 40);
                 image(pipe, 240, 15, 40, 30);
-                text(": -1", 280, 40);
+                text(": -1", 280, 40);*/
+                image(st3board, 0, -30, 300, 150)
             }
 
 
@@ -659,7 +687,7 @@ function draw6() {
 
 
 
-function drawSt1Panel(text1, text2, text3) {
+function drawSt1Panel(text1, text2, text3, text4) {
     if (needSt1Panel) {
         fill(210, 214, 211, 200);
         rect(250, 200, 500, 200, 20);
@@ -667,6 +695,7 @@ function drawSt1Panel(text1, text2, text3) {
         textSize(22);
         text(text1, 280, 240);
         text(text2, 280, 280);
+        text(text4, 280, 315);
         if (mouseX >= 400 && mouseX <= 600 && mouseY >= 320 && mouseY <= 380) fill("red");
         else fill("gray");
         rect(400, 320, 200, 60);
