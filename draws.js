@@ -53,6 +53,7 @@ function draw2() {
             // 스테이지 1에 대사 등장
             break;// 대사 사라지고
         case 2:
+           
             //배경 사물
             image(doma, 0, 0, width, height); //배경 도마
             image(bawl, 130, -140, 600, 900);//그릇
@@ -64,11 +65,11 @@ function draw2() {
 
 
             //점수판 구현
-            image(scoreBoard, 500, 30, 500, 120);
+            image(scoreBoard, 500, -10, 500, 120);
             textSize(24);
             textAlign(LEFT);
             fill(255)
-            text("남은 버터:" + score + '/' + st1SuccessPoint + " 개", 700, 100);
+            text("남은 버터:" + score + '/' + st1SuccessPoint + " 개", 700, 60);
 
             //마우스를 따라다니는 거품기
             let whiskOffsetX = 120;
@@ -153,7 +154,10 @@ function draw2() {
 
             //게이지 존
             gaugeZone.display();
-
+            fill("white")
+            text("stay", gaugeZone.x - 70, gaugeZone.y + gaugeZone.h / 2)
+            text("here!", gaugeZone.x - 70, gaugeZone.y + gaugeZone.h / 2 + 20)
+            triangle(gaugeZone.x+5, gaugeZone.y + gaugeZone.h / 2 - 15, gaugeZone.x + 5, gaugeZone.y + gaugeZone.h / 2 + 15, gaugeZone.x+25, gaugeZone.y + gaugeZone.h / 2)
 
             fill(245, 165, 44);//게이지 바 그리기
             noStroke();
@@ -370,10 +374,10 @@ function draw4() {
             image(scoreBoard, 500, 0, 500, 80);
             textSize(22);
             textAlign(LEFT);
-            text("찍은 사진:" + score3 + '/' + st3SuccessPoint+" 장", 710, 50);
+            text("찍은 사진:" + score3 + '/' + st3SuccessPoint + " 장", 710, 50);
 
             //플래시 이펙트
-            if (clickCooltime!=0) image(flash, cameraButton.x + 150, cameraButton.y + 20, 150, 150)
+            if (clickCooltime != 0) image(flash, cameraButton.x + 150, cameraButton.y + 20, 150, 150)
             //시작 전, 성공, 실패 상태에 따라 패널의 내용을 변경
             if (score3 == 0 && remainingTime3 != 0) drawSt1Panel("카메라를 클릭해 사진을 찍자.", "남자의 얼굴이 완전히 가려졌을 때 찍어야 한다.", "START");
             else if (score3 >= st3SuccessPoint && remainingTime3 >= 0) drawSt1Panel("사진을 아주 잘 찍었다!", "남자에게 보여 주자.", "NEXT");
@@ -391,7 +395,7 @@ function draw4() {
                     remainingTime3 = 60;
                     for (let t of targets) {
                         t.relocate();// 화면에 그리기
-                        t.speed=width/6;
+                        t.speed = width / 6;
                     }
                 }
             }
@@ -416,8 +420,8 @@ function draw4() {
                 line(width / 2 + 40, 0, width / 2 + 40, 300)
                 for (let t of targets) {
                     t.move();     // 위치 업데이트
-                    t.speed+=0.3;
-                    movingSpeed=t.speed;
+                    t.speed += 0.3;
+                    movingSpeed = t.speed;
                     t.display();  // 화면에 그리기
                 }
 
@@ -560,7 +564,7 @@ function draw6() {
                 if (dialogue10.index >= 3) {
                     kid_painting.play();
                     image(kid_painting, 0, 0, width, height)
-    
+
                 }
             }
             else if (dialogue10.index > 8 && dialogue10.index <= 19) {

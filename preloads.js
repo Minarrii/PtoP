@@ -23,7 +23,7 @@ function preload1() {
     whisk = loadImage('assets/stage1/whisk.png');
     scoreBoard = loadImage('assets/stage1/scoreBoard.png');
     gauge = loadImage('assets/stage1/gauge.png');
-    board = loadImage('assets/stage1/board.png');
+    board = loadImage('assets/stage1/zone.png');
     butter = loadImage('assets/stage1/butter.png');
     milkWoman = createVideo(['assets/stage1/milkmilk.mp4']);
     milk2 = loadImage('assets/stage1/milk_2.png');

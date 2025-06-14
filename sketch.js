@@ -1,5 +1,5 @@
 
-let stageNum = 0; //스테이지 관리  나중에 바꾸셈
+let stageNum = 1; //스테이지 관리  나중에 바꾸셈
 let slide = 0;
 //대화 시스템 관련
 let ghostImg, shakeSound;
@@ -202,13 +202,13 @@ function setup() {
 
   //1스테 게이지존
   for (let i = 0; i < 99; i++) {
-    zoneYArray[i] = random(60, 300);
-    zoneHArray[i] = random(80, 160);
+    zoneYArray[i] = random(75, 300);
+    zoneHArray[i] = random(100, 160);
   }
   gaugeZoneY = zoneYArray[0];
   gaugeZoneH = zoneHArray[0];
 
-  gaugeZone = new Gauge(board, 913, gaugeZoneY, 82, gaugeZoneH);
+  gaugeZone = new Gauge(board, 866, gaugeZoneY, 136, gaugeZoneH);
 
   lastTimeChecked = millis();
   lastTimeChecked3 = millis();
