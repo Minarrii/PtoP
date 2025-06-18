@@ -36,7 +36,7 @@ let needSt1Panel = true;
 let st1Timer = 0;
 let lastTimeChecked; //1스테 타이머 변수
 let remainingTime = 60;
-let st1SuccessPoint = 1;//성공 목표 점수!
+let st1SuccessPoint = 5;//성공 목표 점수!
 let gaugeZone;
 let gaugeDirection = 1;
 //다이얼로그
@@ -50,10 +50,10 @@ let currentTurn = 0;
 let maxTurns = 20;
 let nextTurnTime = 0;
 let score2 = 0;
-let remainingTime2 = 60;
+let remainingTime2 = 30;
 let clickedThisFrame = false;
 let lastTimeChecked2 = 0;
-let st2SuccessPoint = 5; //목표 점수
+let st2SuccessPoint = 40; //목표 점수
 //
 let normalCropImg, goldCropImg, darkCropImg;
 let equipmentImg, scoreBoard, noWomanbg, womanbg;
@@ -67,7 +67,7 @@ let score3 = 0;
 let lastTimeChecked3;//3스테 타이머 변수
 let st3Timer = 0;
 let remainingTime3 = 60;
-let st3SuccessPoint = 1; //목표 점수
+let st3SuccessPoint = 50; //목표 점수
 let cameraButton;
 let targetImages = [];
 let targets = [];
