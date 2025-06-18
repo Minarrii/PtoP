@@ -4,7 +4,7 @@ let slide = 0;
 //대화 시스템 관련
 let ghostImg, shakeSound;
 let backgroundDark, backgroundLight, museumImg;
-let startBtnImg, inputPromptImg, continueBtnImg;
+let startBtnImg,startBtnImgCl, inputPromptImg, continueBtnImg,continueBtnImgCl;
 let ghostAlpha = 0;
 let shake = false;
 let shakeStartTime = 0;
@@ -13,6 +13,8 @@ let playerName = "조민환(개발자)";
 let inputBox;
 let dialogueBoxImg, nextButtonImg;
 let myFont;
+let startButton_prologue;
+let continueButton_prologue;
 //1스테이지
 let titleBack, startBut, startButCl, art, doma, bubble, bawl, whisk, gauge, board, butter, milkWoman, milk2, milk3, milk4, milk5, hurryUp;
 let score = 0;
@@ -34,7 +36,7 @@ let needSt1Panel = true;
 let st1Timer = 0;
 let lastTimeChecked; //1스테 타이머 변수
 let remainingTime = 60;
-let st1SuccessPoint = 5;//성공 목표 점수!
+let st1SuccessPoint = 1;//성공 목표 점수!
 let gaugeZone;
 let gaugeDirection = 1;
 //다이얼로그
@@ -51,7 +53,7 @@ let score2 = 0;
 let remainingTime2 = 60;
 let clickedThisFrame = false;
 let lastTimeChecked2 = 0;
-let st2SuccessPoint = 30; //목표 점수
+let st2SuccessPoint = 5; //목표 점수
 //
 let normalCropImg, goldCropImg, darkCropImg;
 let equipmentImg, scoreBoard, noWomanbg, womanbg;
@@ -65,7 +67,7 @@ let score3 = 0;
 let lastTimeChecked3;//3스테 타이머 변수
 let st3Timer = 0;
 let remainingTime3 = 60;
-let st3SuccessPoint = 50; //목표 점수
+let st3SuccessPoint = 1; //목표 점수
 let cameraButton;
 let targetImages = [];
 let targets = [];
@@ -142,6 +144,19 @@ function setup() {
   dialogue9 = new Dialogue(dialogue9List);
   dialogue10 = new Dialogue(dialogue10List);
   dialogue12 = new Dialogue(dialogue12List);
+
+  //GAME START HOVERING
+  startButton_prologue = new Button(startBtnImg, startBtnImgCl, width / 2 - startBtnImg.width * 0.35 / 2, height * 0.85 - startBtnImg.height * 0.35 / 2, startBtnImg.width * 0.35, startBtnImg.height * 0.35, () => {
+    slide = 1;
+  });
+  
+  continueButton_prologue = new Button(continueBtnImg, continueBtnImgCl, width / 2 - continueBtnImg.width * 0.25 / 2, height / 2 + 100 - continueBtnImg.height * 0.25 / 2, continueBtnImg.width * 0.25, continueBtnImg.height * 0.25, () => {
+    const name = inputBox.value().trim();
+    if (name !== "") {
+      playerName = name;
+      slide = 2;
+    }
+  });
 
   startButton = new Button(startBut, startButCl, width / 2 - 140, height * 4 / 5 - 50, 300, 100, () => {
     if (stageNum == 1) stage1sceneNum = 1;
@@ -424,26 +439,11 @@ function mousePressed() {
     cookingMousePressed();
   } else {
 
-    if (slide === 0) { //스타트 버튼 1씬에서
-      const btnX = width / 2;
-      const btnY = height * 0.85;
-      const btnW = startBtnImg.width * 0.35;
-      const btnH = startBtnImg.height * 0.35;
-      if (mouseX >= btnX - btnW / 2 && mouseX <= btnX + btnW / 2 &&
-        mouseY >= btnY - btnH / 2 && mouseY <= btnY + btnH / 2) {
-        slide = 1;
-      }
-    } else if (slide === 1) { //컨틴뉴 버튼
-      const name = inputBox.value().trim();
-      const btnX = width / 2;
-      const btnY = height / 2 + 100;
-      const btnW = continueBtnImg.width * 0.25;
-      const btnH = continueBtnImg.height * 0.25;
-      if (name !== "" && mouseX >= btnX - btnW / 2 && mouseX <= btnX + btnW / 2 &&
-        mouseY >= btnY - btnH / 2 && mouseY <= btnY + btnH / 2) {
-        playerName = name;
-        slide = 2;
-      }
+    if (slide === 0) {
+      startButton_prologue.checkClick();
+    } else if (slide === 1) {
+      continueButton_prologue.checkClick();
+  
     } else if (slide >= 2) { // 그 이상에서는 다음 버튼
       const btnX = width - 170;
       const btnY = height - 50;

@@ -27,7 +27,7 @@ class Dialogue {
   next() {
     if (this.index < this.dialogues.length - 1) {
       this.index++;
-      if (this.index === 4&&stageNum==0) {
+      if (this.index === 6 &&stageNum==0) {
         this.shake = true;
         this.shakeStartTime = millis();
         if (!this.hasPlayedShakeSound) {
@@ -65,16 +65,16 @@ class Dialogue {
       dy += random(-5, 5);
     }
 // 대사 박스
-    let boxW = dialogueBoxImg.width * 0.35;
-    let boxH = dialogueBoxImg.height * 0.35;
+    let boxW = dialogueBoxImg.width * 0.38;
+    let boxH = dialogueBoxImg.height * 0.38;
     imageMode(CENTER);
     image(dialogueBoxImg, dx, dy, boxW, boxH);
 // 이름 위치
     let speakerName = this.getCurrentSpeaker(playerName);
     textAlign(CENTER, CENTER);
-    textSize(22);
+    textSize(20);
     fill(255);
-    text(speakerName, dx / 2 + 3, dy - boxH / 2 + 40);
+    text(speakerName, dx / 2 -70, dy - boxH / 2 + 31);
 
     textAlign(CENTER, CENTER);
     textSize(20);
@@ -83,7 +83,7 @@ class Dialogue {
     let content = this.getCurrentText();
     let textAreaWidth = boxW * 0.85;
     let textX = dx;
-    let textY = dy + 36;
+    let textY = dy + 26;
 //대사가 밑으로 가는 --> 옆으로 안 퍼지고 모양  잡게
     let words = content.split(" ");
     let lines = [], currentLine = "";
@@ -105,6 +105,6 @@ class Dialogue {
       text(lines[i], textX, startY + i * lineHeight);
     }
 
-    image(nextButtonImg, width - 175, height - 55, 75, 23);
+    image(nextButtonImg, width - 175, height - 63, 75, 23);
   }
 }

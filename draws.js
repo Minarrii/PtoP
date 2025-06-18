@@ -1,27 +1,46 @@
+function drawGhostImage(dialogueObj) {
+    let speaker = dialogueObj.getCurrentSpeaker(playerName);
+    tint(255, ghostAlpha);
+    if (speaker === playerName) {
+      image(ghostImgFalse, width / 2, height / 2, ghostImgFalse.width * 0.3, ghostImgFalse.height * 0.3);
+    } else {
+      image(ghostImg, width / 2, height / 2, ghostImg.width * 0.4, ghostImg.height * 0.4);
+    }
+    noTint();
+  }
+  
+
 function draw1() {
     background(255);
+    
     if (slide === 0) {
-        image(backgroundDark, width / 2, height / 2, width, height);
-        image(startBtnImg, width / 2, height * 0.85, startBtnImg.width * 0.35, startBtnImg.height * 0.35);
+      image(backgroundDark, width / 2, height / 2, width, height);
+      imageMode(CORNER);
+      startButton_prologue.display();
+      imageMode(CENTER);
+  
     } else if (slide === 1) {
-        image(backgroundLight, width / 2, height / 2, width, height);
-        image(inputPromptImg, width / 2, height / 2, inputPromptImg.width * 0.32, inputPromptImg.height * 0.32);
-        inputBox.show();
-        image(continueBtnImg, width / 2, height / 2 + 100, continueBtnImg.width * 0.25, continueBtnImg.height * 0.25);
-    } else {
-        inputBox.hide();
-        image(museumImg, width / 2, height / 2, width, height);
-
-        if (slide >= 5 && ghostAlpha < 255) ghostAlpha += 20;
-        if (slide >= 5) {
-            tint(255, ghostAlpha);
-            image(ghostImg, width / 2, height / 2, ghostImg.width * 0.3, ghostImg.height * 0.3);
-            noTint();
-        }
-        dialogue1.display(playerName, dialogueBoxImg, nextButtonImg);
+      image(backgroundLight, width / 2, height / 2, width, height);
+      image(inputPromptImg, width / 2, height / 2, inputPromptImg.width * 0.32, inputPromptImg.height * 0.32);
+      imageMode(CORNER);
+      inputBox.show(); // 이름 입력창 보여주기
+      continueButton_prologue.display(); // 계속 버튼
+     // image(museumImg, width / 2, height / 2, width, height);
+     imageMode(CENTER);
+    } else if (slide >= 2) {
+      inputBox.hide(); // 이름 입력 끝났으면 숨김
+      image(backgroundLight, width / 2, height / 2, width, height);
+      image(museumImg, width / 2, height / 2, width, height);
+  
+      if (slide >= 7 && ghostAlpha < 255) ghostAlpha += 20;
+      if (slide >= 7) {
+        drawGhostImage(dialogue1); 
+      }
+  
+      dialogue1.display(playerName, dialogueBoxImg, nextButtonImg);
     }
-
-}
+  }
+  
 
 
 
@@ -215,7 +234,7 @@ function draw2() {
                 imageMode(CENTER);
                 textAlign(LEFT, TOP);
                 image(museumImg, width / 2, height / 2, width, height);
-                image(ghostImg, width / 2, height / 2, ghostImg.width * 0.3, ghostImg.height * 0.3);
+                drawGhostImage(dialogue3)
             }
             dialogue3.start();
             dialogue3.display(playerName, dialogueBoxImg, nextButtonImg);
@@ -263,6 +282,21 @@ function draw3() {
             for (let i = 0; i < cropGrid.length; i++) {
                 let crop = cropGrid[i];
                 if (crop && crop.isVisible()) crop.display();
+            }
+
+            for (let i = 0; i < pointsText.length; i++) {
+                let pt = pointsText[i];
+                let timeElapsed = millis() - pt.timer;
+        
+                // Display the text for a longer time, e.g., 2 seconds
+                if (timeElapsed < 400) { // Display text for 2 seconds
+                    fill(pt.color);
+                    textSize(40);
+                    text(pt.text, pt.x, pt.y); // Display at the crop's position
+                } else {
+                    pointsText.splice(i, 1); // Remove the text after the duration
+                    i--;
+                }
             }
 
             drawUI();
@@ -328,7 +362,7 @@ function draw3() {
                 imageMode(CENTER);
                 textAlign(LEFT, TOP)
                 image(museumImg, width / 2, height / 2, width, height);
-                image(ghostImg, width / 2, height / 2, ghostImg.width * 0.3, ghostImg.height * 0.3);
+                drawGhostImage(dialogue5);
             }
 
             dialogue5.start();  // 한 번만 실행
@@ -482,7 +516,7 @@ function draw4() {
                 imageMode(CENTER);
                 textAlign(LEFT, TOP);
                 image(museumImg, width / 2, height / 2, width, height);
-                image(ghostImg, width / 2, height / 2, ghostImg.width * 0.3, ghostImg.height * 0.3);
+                drawGhostImage(dialogue7);
             }
 
             dialogue7.start();  // 한 번만 실행
@@ -530,7 +564,7 @@ function draw5() {
             noStroke();
             textSize(18);
             textAlign(CENTER);
-            text(dialogue8List[frame].text, chatPos.x + 20, chatPos.y + 25, chatPos.w - 40, chatPos.h - 40);
+            text(dialogue8List[frame].text, chatPos.x + 20, chatPos.y + 19, chatPos.w - 40, chatPos.h - 40);
 
             // 요리 재료
             if (frame === 0) {
@@ -599,7 +633,7 @@ function draw6() {
                 imageMode(CORNER);
                 image(museumImg, 0, 0, width, height);
                 imageMode(CENTER);
-                image(ghostImg, width / 2, height / 2, ghostImg.width * 0.3, ghostImg.height * 0.3);
+                drawGhostImage(dialogue10);
 
             } else if (dialogue10.index >= 20) { //화가로 성불하는 부분
                 imageMode(CORNER);
@@ -716,7 +750,8 @@ function drawBackground() {
 //점수 표시
 function drawUI() {
     image(scoreBoard, 500, -10, 500, 120);
-    textSize(30);
+    fill("white");
+    textSize(27);
     textAlign(LEFT);
     text("주운 이삭:" + score2 + " 개", 700, 50);
     let min = floor(remainingTime2 / 60);
@@ -757,9 +792,9 @@ function spawnCrops() {
         let y = row * cellHeight + (cellHeight - cropSize) / 2 + 195;  // 210 pushes grid lower on screen
 
         let type = "normal";
-        if (currentTurn >= 5 && currentTurn < 15 && (i === 0 || i === 1)) {
+        if (currentTurn >= 3 && currentTurn < 10 && (i === 0 || i === 1)) {
             type = i === 0 ? "gold" : "dark";
-        } else if (currentTurn >= 15 && (i < 4)) {
+        } else if (currentTurn >= 10 && (i < 4)) {
             type = i % 2 === 0 ? "gold" : "dark";
         }
         cropGrid[idx] = new Crop(x, y, type);

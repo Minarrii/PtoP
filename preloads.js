@@ -5,11 +5,14 @@ function preload0() {
     startBtnImg = loadImage("prologue assets/start.png");
     inputPromptImg = loadImage("prologue assets/namebox.png");
     continueBtnImg = loadImage("prologue assets/continue.png");
-    ghostImg = loadImage("prologue assets/ghost asset.png");
+    ghostImg = loadImage("prologue assets/darker_ghost2.png");
+    ghostImgFalse = loadImage("prologue assets/ghost asset.png");
     shakeSound = loadSound('prologue assets/soundeffect.mp3');
-    dialogueBoxImg = loadImage("prologue assets/dialoguebox.png");
+    dialogueBoxImg = loadImage("assets/re_chat.png");
     nextButtonImg = loadImage("prologue assets/nextbrush.png");
     myFont = loadFont("prologue assets/Typo_Crayon M.ttf");
+    startBtnImgCl= loadImage('assets/gamestartcl.png');
+    continueBtnImgCl= loadImage('assets/ctncl.png');
 }
 
 function preload1() {
@@ -36,7 +39,7 @@ function preload1() {
 
 function preload2() {
     womanbg = loadImage("assets/stage2/woman_bg.png")
-    goldCropImg = loadImage("assets/stage2/goldCrop.png");
+    goldCropImg = loadImage("assets/stage2/gold-crop.gif");
     normalCropImg = loadImage("assets/stage2/crop.png");
     darkCropImg = loadImage("assets/stage2/darkCrop.png");
     equipmentImg = loadImage("assets/stage2/equipment.png");
