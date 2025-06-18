@@ -34,6 +34,7 @@ function preload1() {
     milk4 = loadImage('assets/stage1/milk_4.png');
     milk5 = loadImage('assets/stage1/milk_5.png');
     hurryUp = loadImage('assets/stage1/Hurry up_ghost.png');
+    cArrow=loadImage('assets/stage1/game_arrow2.png');
 
 }
 

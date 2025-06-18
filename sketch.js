@@ -1,5 +1,5 @@
 
-let stageNum = 0; //스테이지 관리  나중에 바꾸셈
+let stageNum = 1; //스테이지 관리  나중에 바꾸셈
 let slide = 0;
 //대화 시스템 관련
 let ghostImg, shakeSound;
@@ -16,7 +16,7 @@ let myFont;
 let startButton_prologue;
 let continueButton_prologue;
 //1스테이지
-let titleBack, startBut, startButCl, art, doma, bubble, bawl, whisk, gauge, board, butter, milkWoman, milk2, milk3, milk4, milk5, hurryUp;
+let titleBack, startBut, startButCl, art, doma, bubble, bawl, whisk, gauge, board, butter, milkWoman, milk2, milk3, milk4, milk5, hurryUp,cArrow;
 let score = 0;
 let centerX = 420;
 let centerY = 300;

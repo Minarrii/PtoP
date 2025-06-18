@@ -81,6 +81,9 @@ function draw2() {
             else if (score == 1 || score == 2) image(milk2, 170, -100, 540, 810);
             else if (score == 3 || score == 4) image(milk3, 160, -120, 520, 800);
             else if (score >= 5) image(milk5, 160, -80, 540, 810);
+            
+            //원형 화살표
+            if(!needSt1Panel&& angularVelocity==0)image(cArrow,160, 40, 540, 540)
 
 
             //점수판 구현
