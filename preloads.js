@@ -5,14 +5,17 @@ function preload0() {
     startBtnImg = loadImage("prologue assets/start.png");
     inputPromptImg = loadImage("prologue assets/namebox.png");
     continueBtnImg = loadImage("prologue assets/continue.png");
-    ghostImg = loadImage("prologue assets/darker_ghost2.png");
-    ghostImgFalse = loadImage("prologue assets/ghost asset.png");
+    ghostImg = loadImage("prologue assets/ghost asset.png");
+    ghostImgFalse = loadImage("prologue assets/darkGhost.png");
     shakeSound = loadSound('prologue assets/soundeffect.mp3');
     dialogueBoxImg = loadImage("assets/re_chat.png");
     nextButtonImg = loadImage("prologue assets/nextbrush.png");
     myFont = loadFont("prologue assets/Typo_Crayon M.ttf");
-    startBtnImgCl= loadImage('assets/gamestartcl.png');
-    continueBtnImgCl= loadImage('assets/ctncl.png');
+    startBtnImgCl = loadImage('assets/gamestartcl.png');
+    continueBtnImgCl = loadImage('assets/ctncl.png');
+    proBGM = loadSound('prologue assets/Dance for Wind Trio - Sir Cubworth.mp3');
+    titleBGM = loadSound('prologue assets/Hopeful Freedom - Asher Fulero.mp3');
+   
 }
 
 function preload1() {
@@ -34,7 +37,8 @@ function preload1() {
     milk4 = loadImage('assets/stage1/milk_4.png');
     milk5 = loadImage('assets/stage1/milk_5.png');
     hurryUp = loadImage('assets/stage1/Hurry up_ghost.png');
-    cArrow=loadImage('assets/stage1/game_arrow2.png');
+    cArrow = loadImage('assets/stage1/game_arrow2.png');
+    BGM1 = loadSound('assets/stage1/Mediterranean View - Everet Almond.mp3');
 
 }
 
@@ -47,7 +51,7 @@ function preload2() {
     scoreBoard = loadImage("assets/stage2/scoreboard.png");
     noWomanbg = loadImage("assets/stage2/nowoman_bg_red.png");
     cropcrop = createVideo(['assets/stage2/cropcrop.mp4'])
-
+    BGM2 = loadSound('assets/stage2/Blue Ribbons - TrackTribe.mp3');
 
 }
 
@@ -66,8 +70,9 @@ function preload3() {
     targetImages[2] = face;
     targetImages[3] = pipe;
     flash = loadImage('assets/stage3/flash.png');
-    camSound=loadSound('assets/stage3/cam.mp3');
-    st3board=loadImage('assets/stage3/board.png');
+    camSound = loadSound('assets/stage3/cam.mp3');
+    st3board = loadImage('assets/stage3/board.png');
+    BGM3 = loadSound('assets/stage3/Sail On Stranger - Dan _Lebo_ Lebowitz, Tone Seeker.mp3');
 }
 
 function preload4() {
@@ -86,7 +91,7 @@ function preload4() {
     handImg = loadImage('assets/cooking/hand.png');
     oven_darkbg = loadImage('assets/cooking/oven_pie_dark.png')
     oven_lightbg = loadImage('assets/cooking/oven_pie_light.png')
-
+    cookingBGM = loadSound('assets/cooking/Powdered Waltz - The Mini Vandals.mp3');
 }
 
 function preload5() {
@@ -95,15 +100,19 @@ function preload5() {
     painter = loadImage('assets/last/painter.png');
     last_bg = loadImage('assets/last/last_bg_typo.PNG');
     drawdraw = createVideo(['assets/last/drawdraw.mp4']);
-    kid_painting= createVideo(['assets/last/kid_painting.mp4']);
-    ghost_painter=loadImage('assets/last/ghost_painter.png');
-    whiteLast=loadImage('assets/last/white_last.png');
-    theEndGst=loadImage('assets/last/theendgst.png');
+    kid_painting = createVideo(['assets/last/kid_painting.mp4']);
+    ghost_painter = loadImage('assets/last/ghost_painter.png');
+    whiteLast = loadImage('assets/last/white_last.png');
+    theEndGst = loadImage('assets/last/theendgst.png');
+    endBGM=loadSound('assets/last/Dream Big - Jeremy Korpas.mp3');
+    credit=loadImage('assets/last/Credit.png');
+    creditButton=loadImage('assets/last/credit butt.png');
+    cbClicked=loadImage('assets/last/cbClicked.png');
 
     milkWoman.hide();//DOM에 표시되는 걸 막기 위함 
     drawdraw.hide();
     cropcrop.hide();
     kid_painting.hide();
-    
+
 
 }

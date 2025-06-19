@@ -1,10 +1,10 @@
 
-let stageNum = 1; //스테이지 관리  나중에 바꾸셈
+let stageNum = 0; //스테이지 관리  나중에 바꾸셈
 let slide = 0;
 //대화 시스템 관련
-let ghostImg, shakeSound;
+let ghostImg, shakeSound, proBGM, BGM1, BGM2, BGM3, endBGM, titleBGM, cookingBGM;
 let backgroundDark, backgroundLight, museumImg;
-let startBtnImg,startBtnImgCl, inputPromptImg, continueBtnImg,continueBtnImgCl;
+let startBtnImg, startBtnImgCl, inputPromptImg, continueBtnImg, continueBtnImgCl;
 let ghostAlpha = 0;
 let shake = false;
 let shakeStartTime = 0;
@@ -16,7 +16,7 @@ let myFont;
 let startButton_prologue;
 let continueButton_prologue;
 //1스테이지
-let titleBack, startBut, startButCl, art, doma, bubble, bawl, whisk, gauge, board, butter, milkWoman, milk2, milk3, milk4, milk5, hurryUp,cArrow;
+let titleBack, startBut, startButCl, art, doma, bubble, bawl, whisk, gauge, board, butter, milkWoman, milk2, milk3, milk4, milk5, hurryUp, cArrow;
 let score = 0;
 let centerX = 420;
 let centerY = 300;
@@ -77,7 +77,7 @@ let nextClickableTime = 0;
 let clickCooltimeDuration;
 let isFlashOn = false;
 let flashEndTime = 0;
-let get1,get2,lose1,lose2;
+let get1, get2, lose1, lose2;
 
 //cookingstage
 // cooking stage globals
@@ -105,7 +105,7 @@ let pieTrayRadiusY = 110;
 let banjukPos = { x: 111, y: 185.5, w: 300, h: 191 };
 
 //epliogue
-let backToStartClicked, backToStart, painter, last_bg, drawdraw, whiteLast, ghost_painter, theEndGst,st3board;
+let backToStartClicked, backToStart, painter, last_bg, drawdraw, whiteLast, ghost_painter, theEndGst, st3board;
 let stage5sceneNum = 0;
 let zoomStart = false;
 let zoom = 1
@@ -115,6 +115,7 @@ let zoomDelay = 0;
 let restartButton;
 let playing = false;
 let playingtime;
+let credit, creditButton,CreditButton,creditOn,cbClicked;
 
 function preload() {
   preload0();
@@ -127,6 +128,9 @@ function preload() {
 }
 
 function setup() {
+
+ 
+
   createCanvas(1024, 576);
   textFont(myFont);
   imageMode(CENTER);
@@ -149,7 +153,7 @@ function setup() {
   startButton_prologue = new Button(startBtnImg, startBtnImgCl, width / 2 - startBtnImg.width * 0.35 / 2, height * 0.85 - startBtnImg.height * 0.35 / 2, startBtnImg.width * 0.35, startBtnImg.height * 0.35, () => {
     slide = 1;
   });
-  
+
   continueButton_prologue = new Button(continueBtnImg, continueBtnImgCl, width / 2 - continueBtnImg.width * 0.25 / 2, height / 2 + 100 - continueBtnImg.height * 0.25 / 2, continueBtnImg.width * 0.25, continueBtnImg.height * 0.25, () => {
     const name = inputBox.value().trim();
     if (name !== "") {
@@ -164,6 +168,8 @@ function setup() {
     else if (stageNum == 3) stage3sceneNum = 1;
 
   });
+
+
 
   //스테 3 이미지 배열 만들기
   for (let i = 0; i < 160; i++) {
@@ -199,19 +205,19 @@ function setup() {
         if (validTarget.imgNum === 0) {
           score3 += 1;
           console.log("사과 발견! 점수 +1");
-          get1=true;
+          get1 = true;
         } else if (validTarget.imgNum === 1) {
           score3 -= 2;
           console.log("새 발견! 점수 -2");
-          lose2=true;
+          lose2 = true;
         } else if (validTarget.imgNum === 2) {
           score3 += 2;
           console.log("얼굴발견! 점수 +2");
-          get2=true;
+          get2 = true;
         } else if (validTarget.imgNum === 3) {
           score3 -= 1;
           console.log("파이프 발견! 점수 -1");
-          lose1=true;
+          lose1 = true;
         }
       } else {
         console.log("해당 영역에 타겟 없음");
@@ -420,6 +426,7 @@ function mouseClicked() {
   }
   if (stageNum == 5 && stage5sceneNum == 2) {
     restartButton.checkClick()//초기화 버튼
+    CreditButton.checkClick();//크레딧버튼
   }
 
   // 추후 게임 인터랙션 등을 여기에 추가 가능
@@ -433,6 +440,26 @@ function mousePressed() {
   cropcrop.loop();
   drawdraw.loop();
 
+  //BGM
+ if (!proBGM.isPlaying() &&stageNum==0&&slide>=1) {
+    proBGM.loop();
+  } else if (!BGM1.isPlaying() && stageNum == 1) {
+     proBGM.stop();
+    BGM1.loop();
+  } else if (!BGM2.isPlaying() && stageNum == 2) {
+     BGM1.stop();
+    BGM2.loop();
+  } else if (!BGM3.isPlaying() && stageNum == 3) {
+    BGM2.stop();
+    BGM3.loop();
+  } else if (!cookingBGM.isPlaying() && stageNum == 4) {
+     BGM3.stop();
+    cookingBGM.loop();
+  } else if (!endBGM.isPlaying() && stageNum == 5 && dialogue10.index >= 3) {
+    cookingBGM.stop();
+    endBGM.loop();
+  }
+
 
   if (stageNum === 4) {
     // 요리씬 스테이지 먼저 넣음
@@ -443,7 +470,7 @@ function mousePressed() {
       startButton_prologue.checkClick();
     } else if (slide === 1) {
       continueButton_prologue.checkClick();
-  
+
     } else if (slide >= 2) { // 그 이상에서는 다음 버튼
       const btnX = width - 170;
       const btnY = height - 50;

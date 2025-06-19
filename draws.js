@@ -2,45 +2,45 @@ function drawGhostImage(dialogueObj) {
     let speaker = dialogueObj.getCurrentSpeaker(playerName);
     tint(255, ghostAlpha);
     if (speaker === playerName) {
-      image(ghostImgFalse, width / 2, height / 2, ghostImgFalse.width * 0.3, ghostImgFalse.height * 0.3);
+        image(ghostImgFalse, width / 2, height / 2, ghostImgFalse.width * 0.52, ghostImgFalse.height * 0.52);
     } else {
-      image(ghostImg, width / 2, height / 2, ghostImg.width * 0.4, ghostImg.height * 0.4);
+        image(ghostImg, width / 2, height / 2, ghostImg.width * 0.4, ghostImg.height * 0.4);
     }
     noTint();
-  }
-  
+}
+
 
 function draw1() {
     background(255);
-    
+
     if (slide === 0) {
-      image(backgroundDark, width / 2, height / 2, width, height);
-      imageMode(CORNER);
-      startButton_prologue.display();
-      imageMode(CENTER);
-  
+        image(backgroundDark, width / 2, height / 2, width, height);
+        imageMode(CORNER);
+        startButton_prologue.display();
+        imageMode(CENTER);
+
     } else if (slide === 1) {
-      image(backgroundLight, width / 2, height / 2, width, height);
-      image(inputPromptImg, width / 2, height / 2, inputPromptImg.width * 0.32, inputPromptImg.height * 0.32);
-      imageMode(CORNER);
-      inputBox.show(); // 이름 입력창 보여주기
-      continueButton_prologue.display(); // 계속 버튼
-     // image(museumImg, width / 2, height / 2, width, height);
-     imageMode(CENTER);
+        image(backgroundLight, width / 2, height / 2, width, height);
+        image(inputPromptImg, width / 2, height / 2, inputPromptImg.width * 0.32, inputPromptImg.height * 0.32);
+        imageMode(CORNER);
+        inputBox.show(); // 이름 입력창 보여주기
+        continueButton_prologue.display(); // 계속 버튼
+        // image(museumImg, width / 2, height / 2, width, height);
+        imageMode(CENTER);
     } else if (slide >= 2) {
-      inputBox.hide(); // 이름 입력 끝났으면 숨김
-      image(backgroundLight, width / 2, height / 2, width, height);
-      image(museumImg, width / 2, height / 2, width, height);
-  
-      if (slide >= 7 && ghostAlpha < 255) ghostAlpha += 20;
-      if (slide >= 7) {
-        drawGhostImage(dialogue1); 
-      }
-  
-      dialogue1.display(playerName, dialogueBoxImg, nextButtonImg);
+        inputBox.hide(); // 이름 입력 끝났으면 숨김
+        image(backgroundLight, width / 2, height / 2, width, height);
+        image(museumImg, width / 2, height / 2, width, height);
+
+        if (slide >= 7 && ghostAlpha < 255) ghostAlpha += 20;
+        if (slide >= 7) {
+            drawGhostImage(dialogue1);
+        }
+
+        dialogue1.display(playerName, dialogueBoxImg, nextButtonImg);
     }
-  }
-  
+}
+
 
 
 
@@ -81,9 +81,9 @@ function draw2() {
             else if (score == 1 || score == 2) image(milk2, 170, -100, 540, 810);
             else if (score == 3 || score == 4) image(milk3, 160, -120, 520, 800);
             else if (score >= 5) image(milk5, 160, -80, 540, 810);
-            
+
             //원형 화살표
-            if(!needSt1Panel&& angularVelocity==0)image(cArrow,160, 40, 540, 540)
+            if (!needSt1Panel && angularVelocity == 0) image(cArrow, 160, 40, 540, 540)
 
 
             //점수판 구현
@@ -290,7 +290,7 @@ function draw3() {
             for (let i = 0; i < pointsText.length; i++) {
                 let pt = pointsText[i];
                 let timeElapsed = millis() - pt.timer;
-        
+
                 // Display the text for a longer time, e.g., 2 seconds
                 if (timeElapsed < 400) { // Display text for 2 seconds
                     fill(pt.color);
@@ -410,12 +410,12 @@ function draw4() {
             cameraButton.display(); //카메라 호버링
 
             //점수판 구현
-             if (score3 < 0) score3 = 0;  //음수 안 되게
+            if (score3 < 0) score3 = 0;  //음수 안 되게
             image(scoreBoard, 500, 0, 500, 80);
             textSize(22);
             textAlign(LEFT);
             text("찍은 사진:" + score3 + '/' + st3SuccessPoint + " 장", 710, 50);
-           
+
 
             //플래시 이펙트
             if (isFlashOn) {
@@ -704,16 +704,32 @@ function draw6() {
                 text("행복한 화가" + ", " + playerName, 710, 367)
                 pop();
             }
-            if (millis() - zoomDelay >= 5000) {//초기화 버튼
+            if (millis() - zoomDelay >= 5000) {
+                //초기화 버튼
                 restartButton = new Button(backToStart, backToStartClicked, width / 2 + 240, height / 2 + 160, 270, 90, () => {
                     window.location.reload();
                 });
+
+                //엔딩크레딧 버튼
+                CreditButton = new Button(creditButton, cbClicked, width / 2 - 480, height / 2 + 120, 270, 180, () => {
+                    creditOn = true;
+                    console.log(creditOn)
+                });
+
                 imageMode(CENTER)
                 fill(255, 80)
                 rect(0, 0, 4000, 4000)
                 image(theEndGst, width / 2, height / 2, theEndGst.width / 3, theEndGst.height / 3)
                 imageMode(CORNER)
+                CreditButton.display();
+                imageMode(CENTER)
+                if (creditOn) {
+                    image(credit, width / 2, height / 2, width, height)
+                }
+                imageMode(CORNER)
                 restartButton.display();
+
+
             }
 
             break;
