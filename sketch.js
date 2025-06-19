@@ -480,11 +480,12 @@ function mousePressed() {
         mouseY >= btnY - btnH / 2 && mouseY <= btnY + btnH / 2) {
         if (dialogue1.next()) {
           slide++;
-          if (slide === 14) {
+         } else if (slide === 17) {
             stageNum = 1;
             stage1sceneNum = 0;
+            slide=200
           }
-        }
+        
       }
     }
   }
